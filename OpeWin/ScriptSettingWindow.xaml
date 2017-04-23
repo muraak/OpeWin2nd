@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpeWin"
         mc:Ignorable="d"
-        Title="OpeWin Script Setting" Height="350" Width="525">
+        Title="OpeWin Script Setting" Height="480" Width="525">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
@@ -24,15 +24,31 @@
             <TextBox Grid.Row="0" x:Name="TbxScript"
                      Margin="10, 0, 10, 10"
                      AcceptsReturn="True"></TextBox>
-            <Button Grid.Row="1" 
+            <Button Grid.Row="1"
                     x:Name="BtnDo"
                     Margin="10, 0, 10, 10" 
-                    Width="40" Height="20"
+                    Width="50" Height="20"
                     HorizontalAlignment="Left"
                     Click="BtnDo_Click" >Debug</Button>
         </Grid>
         <TextBlock Grid.Row="2" Margin="10, 10, 10, 0" Height="20" HorizontalAlignment="Left">Output(For Debugging):</TextBlock>
-        <TextBox Grid.Row="3" x:Name="TbxOutput" Margin="10, 0, 10, 10" AcceptsReturn="True" Background="LightGray" Foreground="Black"></TextBox>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" x:Name="TbxOutput" 
+                     Margin="10, 0, 10, 10" 
+                     AcceptsReturn="True" 
+                     Background="#A8E49F" 
+                     Foreground="Black" />
+            <Button Grid.Row="1" 
+                    Margin="10, 0, 10, 10" 
+                    Width="40" Height="20"
+                    HorizontalAlignment="Left"
+                    x:Name="btnClear"
+                    Click="btnClear_Click">Clear</Button>
+        </Grid>
         <Grid Grid.Row="4" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -40,16 +56,16 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="1" HorizontalAlignment="Right">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60"></ColumnDefinition>
-                    <ColumnDefinition Width="60"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" x:Name="BtnOk" 
-                        Margin="10, 10, 10, 10" 
+                        Margin="10, 10, 5, 10" 
                         Width="40" Height="20" 
                         Click="BtnOk_Click">OK</Button>
                 <Button Grid.Column="1" x:Name="BtnCancel"
-                        Margin="10, 10, 10, 10" 
-                        Width="40" Height="20" 
+                        Margin="0, 10, 10, 10" 
+                        Width="50" Height="20" 
                         Click="BtnCancel_Click">Cancel</Button>
             </Grid>
         </Grid>

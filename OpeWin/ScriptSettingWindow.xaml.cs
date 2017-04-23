@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -23,12 +24,22 @@ namespace OpeWin
         NLua.Lua OpeLua;
         DataRow OpeInfo;
 
+        string ScriptHeader = "local untrusted;" + Environment.NewLine
+                            + "do" + Environment.NewLine
+                            + " local _ENV = {Ope = Ope}" + Environment.NewLine
+                            + " function untrusted()" + Environment.NewLine;
+
+        string ScriptFooter = Environment.NewLine
+                            + " end" + Environment.NewLine
+                            + "end" + Environment.NewLine
+                            + "untrusted()" + Environment.NewLine;
+
         public ScriptSettingWindow(DataRow ope_info)
         {
             InitializeComponent();
 
             this.OpeLua = new NLua.Lua();
-            OpeLua["Ope"] = new OpeCommand();
+            OpeLua["OpeCom"] = new OpeCommand();
 
             OpeInfo = ope_info;
 
@@ -47,7 +58,8 @@ namespace OpeWin
             try
             {
                 lua["Ope"] = new OpeCommand(TbxOutput);
-                lua.DoString(input);
+                Debug.Print(ScriptHeader + input + ScriptFooter);
+                lua.DoString(ScriptHeader + input + ScriptFooter);
             }
             catch(Exception e)
             {
@@ -70,6 +82,11 @@ namespace OpeWin
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            TbxOutput.Clear();
         }
     }
 }

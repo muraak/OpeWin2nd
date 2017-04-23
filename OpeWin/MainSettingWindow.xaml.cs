@@ -27,19 +27,7 @@ namespace OpeWin
 
             OpeInfoTable = new DataTable();
 
-            OpeInfoTable.Columns.Add("ID");
-            OpeInfoTable.Columns.Add("Name");
-            OpeInfoTable.Columns.Add("HotKey");
-            OpeInfoTable.Columns.Add("ScriptBody");
-
-            for (int idx = 0; idx < 10; idx++)
-            { 
-                OpeInfoTable.Rows.Add(OpeInfoTable.NewRow());
-                OpeInfoTable.Rows[idx]["ID"] = idx;
-                OpeInfoTable.Rows[idx]["Name"] = "New Ope";
-                OpeInfoTable.Rows[idx]["HotKey"] = "None";
-                OpeInfoTable.Rows[idx]["ScriptBody"] = @"Ope:Print(""Hello world!"")";
-            }
+            OpeInfoTableManager.GenerateDefaultData(OpeInfoTable, 20);
 
             dgOpeList.DataContext = OpeInfoTable;
         }
@@ -66,8 +54,6 @@ namespace OpeWin
 
             int idx = int.Parse((dgOpeList.Columns[0].GetCellContent(curt_row) as TextBlock).Text);
 
-            String script_body = OpeInfoTable.Rows[idx]["ScriptBody"].ToString();
-
             ScriptSettingWindow script_setting_window = new ScriptSettingWindow(OpeInfoTable.Rows[idx]);
             script_setting_window.Owner = this;
             script_setting_window.ShowDialog();
@@ -90,6 +76,26 @@ namespace OpeWin
                 return parent;
             else
                 return FindParent<T>(parentObject);
+        }
+    }
+
+    class OpeInfoTableManager
+    {
+        public static void GenerateDefaultData(DataTable table, int num_of_ope)
+        {
+            table.Columns.Add("ID");
+            table.Columns.Add("Name");
+            table.Columns.Add("HotKey");
+            table.Columns.Add("ScriptBody");
+
+            for (int idx = 0; idx < num_of_ope; idx++)
+            {
+                table.Rows.Add(table.NewRow());
+                table.Rows[idx]["ID"] = idx;
+                table.Rows[idx]["Name"] = "New Ope";
+                table.Rows[idx]["HotKey"] = "None";
+                table.Rows[idx]["ScriptBody"] = @"Ope:Print(""Hello world!"")";
+            }
         }
     }
 }
