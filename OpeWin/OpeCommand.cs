@@ -6,21 +6,46 @@ using System.Windows.Controls;
 
 namespace OpeWin
 {
-    class OpeCommand
+    class Ope
     {
-        private TextBox TbxOputput = null;
+        // Singleton Instance
+        private static Ope Instance = new Ope();
 
-        public int Count { get; set; }
+        private static TextBox TbxOputput = null;
+
+        public  static int Count { get; set; }
         public int[] PrevOpeId = new int[5];
 
-        public OpeCommand()
+        private Ope()
         {
-
+            Initialize();
         }
 
-        public OpeCommand(TextBox output)
+        public void Initialize()
         {
-            this.TbxOputput = output;
+            TbxOputput = null;
+            Count = 0;
+
+            for (int i = 0; i < PrevOpeId.Length; i++)
+            {
+                PrevOpeId[i] = -1;
+            }
+        }
+
+        public void Initialize(TextBox tbx_output)
+        {
+            TbxOputput = tbx_output;
+            Count = 0;
+
+            for (int i = 0; i < PrevOpeId.Length; i++)
+            {
+                PrevOpeId[i] = -1;
+            }
+        }
+
+        public static Ope GetInstance()
+        {
+            return Instance;
         }
 
         public void Print(String input)

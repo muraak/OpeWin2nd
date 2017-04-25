@@ -21,7 +21,6 @@ namespace OpeWin
     /// </summary>
     public partial class ScriptSettingWindow : Window
     {
-        NLua.Lua OpeLua;
         DataRow OpeInfo;
 
         string ScriptHeader = "local untrusted;" + Environment.NewLine
@@ -37,9 +36,6 @@ namespace OpeWin
         public ScriptSettingWindow(DataRow ope_info)
         {
             InitializeComponent();
-
-            this.OpeLua = new NLua.Lua();
-            OpeLua["OpeCom"] = new OpeCommand();
 
             OpeInfo = ope_info;
 
@@ -57,7 +53,9 @@ namespace OpeWin
 
             try
             {
-                lua["Ope"] = new OpeCommand(TbxOutput);
+                Ope ope = Ope.GetInstance();
+                ope.Initialize(TbxOutput);
+                lua["Ope"] = ope;
                 Debug.Print(ScriptHeader + input + ScriptFooter);
                 lua.DoString(ScriptHeader + input + ScriptFooter);
             }
