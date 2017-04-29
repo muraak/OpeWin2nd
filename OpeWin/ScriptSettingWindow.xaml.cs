@@ -40,23 +40,30 @@ namespace OpeWin
             OpeInfo = ope_info;
 
             TbxScript.Text = OpeInfo["ScriptBody"].ToString();
+
+            Ope ope = Ope.GetInstance();
+            ope.Initialize(TbxOutput);
         }
 
         private void BtnDo_Click(object sender, RoutedEventArgs e)
         {
-            this.Do(TbxScript.Text);
+            this.DoScript(TbxScript.Text);
+
+            TbxOutput.ScrollToEnd();
         }
 
-        private void Do(String input)
+        private void DoScript(String input)
         {
             NLua.Lua lua = new NLua.Lua();
 
+            Ope ope = Ope.GetInstance();
+
+            ope.UpdateCount(int.Parse(OpeInfo["ID"].ToString()));
+
+            lua["Ope"] = ope;
+
             try
             {
-                Ope ope = Ope.GetInstance();
-                ope.Initialize(TbxOutput);
-                lua["Ope"] = ope;
-                Debug.Print(ScriptHeader + input + ScriptFooter);
                 lua.DoString(ScriptHeader + input + ScriptFooter);
             }
             catch(Exception e)
@@ -68,6 +75,8 @@ namespace OpeWin
             {
                 lua.Close();
             }
+
+            ope.EnqueuePrevId(int.Parse(OpeInfo["ID"].ToString()));
         }
 
         private void BtnOk_Click(object sender, RoutedEventArgs e)

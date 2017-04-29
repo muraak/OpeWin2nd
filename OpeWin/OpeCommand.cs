@@ -14,38 +14,56 @@ namespace OpeWin
         private static TextBox TbxOputput = null;
 
         public  static int Count { get; set; }
-        public int[] PrevOpeId = new int[5];
+        public Queue<int> PrevOpeIds = new Queue<int>(5);
+
+        private const int MAX_COUNT = 5;
 
         private Ope()
         {
             Initialize();
         }
 
+        public static Ope GetInstance()
+        {
+            return Instance;
+        }
+
         public void Initialize()
         {
             TbxOputput = null;
             Count = 0;
-
-            for (int i = 0; i < PrevOpeId.Length; i++)
-            {
-                PrevOpeId[i] = -1;
-            }
+            PrevOpeIds.Clear();
         }
 
         public void Initialize(TextBox tbx_output)
         {
             TbxOputput = tbx_output;
             Count = 0;
+            PrevOpeIds.Clear();
+        }
 
-            for (int i = 0; i < PrevOpeId.Length; i++)
+        public void UpdateCount(int idx_of_sender)
+        {
+            if(PrevOpeIds.Count == 0)
             {
-                PrevOpeId[i] = -1;
+                Count = 0;
+
+                return;
+            }
+
+            if(idx_of_sender == PrevOpeIds.Last<int>())
+            {
+                Count = (Count + 1) % MAX_COUNT;
+            }
+            else
+            {
+                Count = 0;
             }
         }
 
-        public static Ope GetInstance()
+        public void EnqueuePrevId(int prev_id)
         {
-            return Instance;
+            PrevOpeIds.Enqueue(prev_id);
         }
 
         public void Print(String input)
