@@ -28,9 +28,13 @@ namespace OpeWin
         {
             InitializeComponent();
 
-            OpeInfoTable = new DataTable();
+            OpeInfoTable = OpeInfoTableManager.Load();
 
-            OpeInfoTableManager.GenerateDefaultData(OpeInfoTable);
+            if (OpeInfoTable == null)
+            {
+                OpeInfoTable = new DataTable();
+                OpeInfoTableManager.GenerateDefaultData(OpeInfoTable);
+            }
 
             dgOpeList.DataContext = OpeInfoTable;
         }
@@ -85,18 +89,8 @@ namespace OpeWin
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            OpeInfoTable.TableName = "OpeWinSettings";
-            SaveDataTableToXML(OpeInfoTable, "settings.xml");
-        }
-
-        static public void SaveDataTableToXML(DataTable dt, string xmlPath)
-        {
-            using (FileStream fs 
-                = new FileStream(xmlPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
-            {
-                XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(dt.GetType());
-                serializer.Serialize(fs, dt);
-            }
+            
+            OpeInfoTableManager.Save(OpeInfoTable);
         }
     }
 
@@ -122,6 +116,8 @@ namespace OpeWin
     class OpeInfoTableManager
     {
         private const int MAX_NUM_OF_OPE = 9;
+        private const string SETTING_FILE_NAME = "OpeWinSettings.xml";
+        private const string TABLE_NAME = "OpeWinSettings";
 
         public static void GenerateDefaultData(DataTable table, int num_of_ope)
         {
@@ -145,6 +141,47 @@ namespace OpeWin
         public static void GenerateDefaultData(DataTable table)
         {
             GenerateDefaultData(table, MAX_NUM_OF_OPE);
+        }
+
+        public static void Save(DataTable table)
+        {
+            table.TableName = TABLE_NAME;
+            SaveDataTableToXML(table, SETTING_FILE_NAME);
+        }
+
+        public static void SaveDataTableToXML(DataTable dt, string xmlPath)
+        {
+            using (FileStream fs
+                = new FileStream(xmlPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+            {
+                XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(dt.GetType());
+                serializer.Serialize(fs, dt);
+            }
+        }
+
+        public static DataTable Load()
+        {
+            DataTable table = null;
+            LoadDataTableFromXML(ref table, SETTING_FILE_NAME);
+
+            return table;
+        }
+
+        public static void LoadDataTableFromXML(ref DataTable dt, string xmlPath)
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(xmlPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(DataTable));
+                    dt = (DataTable)serializer.Deserialize(fs);
+                }
+            }
+            catch(Exception e)
+            {
+                dt = null;
+                return;
+            }
         }
     }
 
@@ -208,7 +245,7 @@ namespace OpeWin
             if (CanSet(key_event_args, mod_keys) == true)
             {
                 this.ModKeys = mod_keys;
-                this.Key = (key_event_args.Key == Key.System ? 
+                this.Key = (key_event_args.Key == Key.System ?
                     key_event_args.SystemKey : key_event_args.Key);
             }
             else

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpeWin"
         mc:Ignorable="d"
-        Title="OpeWin Setting" Height="300" Width="300"
+        Title="OpeWin Setting" Height="396" Width="640"
         Closing="Window_Closing">
 
     <Window.Resources>
