@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -91,6 +92,54 @@ namespace OpeWin
         {
             
             OpeInfoTableManager.Save(OpeInfoTable);
+        }
+
+        private void btnStartDebug_Click(object sender, RoutedEventArgs e)
+        {
+            if(((Button)sender).Content.ToString() == "Start Debug")
+            {
+                ((Button)sender).Content = "Stop Debug";
+                MakeDisenableDgOpeList();
+                RowDefinition row_def = new RowDefinition();
+                GridLengthConverter gridLengthConverter = new GridLengthConverter();
+                grdMain.RowDefinitions[2].Height = (GridLength)gridLengthConverter.ConvertFrom("1*");
+                grdDebugSet.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ((Button)sender).Content = "Start Debug";
+                grdDebugSet.Visibility = Visibility.Hidden;
+                GridLengthConverter gridLengthConverter = new GridLengthConverter();
+                grdMain.RowDefinitions[2].Height = (GridLength)gridLengthConverter.ConvertFrom("0");
+                MakeEnableDgOpeList();
+            }
+        }
+
+        private void MakeDisenableDgOpeList()
+        {
+           foreach(DataGridRow row in GetDataGridRows(dgOpeList))
+            {
+                row.IsEnabled = false;
+            }
+        }
+
+        private void MakeEnableDgOpeList()
+        {
+            foreach (DataGridRow row in GetDataGridRows(dgOpeList))
+            {
+                row.IsEnabled = true;
+            }
+        }
+
+        private IEnumerable<DataGridRow> GetDataGridRows(DataGrid grid)
+        {
+            var itemsSource = grid.ItemsSource as IEnumerable;
+            if (null == itemsSource) yield return null;
+            foreach (var item in itemsSource)
+            {
+                var row = grid.ItemContainerGenerator.ContainerFromItem(item) as DataGridRow;
+                if (null != row) yield return row;
+            }
         }
     }
 
