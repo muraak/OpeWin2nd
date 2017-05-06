@@ -5,12 +5,14 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -40,6 +42,25 @@ namespace OpeWin
             dgOpeList.DataContext = OpeInfoTable;
         }
 
+
+        private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            const int WM_HOTKEY = 0x0312;
+            switch (msg)
+            {
+                case WM_HOTKEY:
+
+                    OpeScriptManager.GetInstance().DoScript(
+                        OpeInfoTable.Rows.Find(wParam.ToInt32())["ScriptBody"].ToString(),
+                        wParam.ToInt32());
+                    handled = true;
+                    break;
+            }
+
+            return IntPtr.Zero;
+        }
+
+
         private void dgOpeList_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             Style style = new Style(typeof(DataGridCell));
@@ -63,7 +84,7 @@ namespace OpeWin
 
             int idx = int.Parse((dgOpeList.Columns[0].GetCellContent(curt_row) as TextBlock).Text);
 
-            ScriptSettingWindow script_setting_window = new ScriptSettingWindow(OpeInfoTable.Rows[idx]);
+            ScriptSettingWindow script_setting_window = new ScriptSettingWindow(OpeInfoTable.Rows.Find(idx));
             script_setting_window.Owner = this;
             script_setting_window.ShowDialog();
         }
@@ -96,7 +117,10 @@ namespace OpeWin
 
         private void btnStartDebug_Click(object sender, RoutedEventArgs e)
         {
-            if(((Button)sender).Content.ToString() == "Start Debug")
+
+            IntPtr handle = new WindowInteropHelper(this).Handle;
+
+            if (((Button)sender).Content.ToString() == "Start Debug")
             {
                 ((Button)sender).Content = "Stop Debug";
                 MakeDisenableDgOpeList();
@@ -104,6 +128,16 @@ namespace OpeWin
                 GridLengthConverter gridLengthConverter = new GridLengthConverter();
                 grdMain.RowDefinitions[2].Height = (GridLength)gridLengthConverter.ConvertFrom("1*");
                 grdDebugSet.Visibility = Visibility.Visible;
+
+                OpeScriptManager.GetInstance().Initialize(TbxOutput);
+
+                foreach (DataRow item in OpeInfoTable.Rows)
+                {
+                    bool result = HotKey.RegisterHotKey(
+                        handle, int.Parse(item["ID"].ToString()),
+                        (uint)((HotKey)item["HotKeyObject"]).ModKeys,
+                        (uint)(KeyInterop.VirtualKeyFromKey(((HotKey)item["HotKeyObject"]).Key)));
+                }
             }
             else
             {
@@ -112,6 +146,13 @@ namespace OpeWin
                 GridLengthConverter gridLengthConverter = new GridLengthConverter();
                 grdMain.RowDefinitions[2].Height = (GridLength)gridLengthConverter.ConvertFrom("0");
                 MakeEnableDgOpeList();
+
+                OpeScriptManager.GetInstance().Initialize();
+
+                foreach (DataRow item in OpeInfoTable.Rows)
+                {
+                    HotKey.UnregisterHotKey(handle, int.Parse(item["ID"].ToString()));
+                }
             }
         }
 
@@ -140,6 +181,17 @@ namespace OpeWin
                 var row = grid.ItemContainerGenerator.ContainerFromItem(item) as DataGridRow;
                 if (null != row) yield return row;
             }
+        }
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+        }
+
+        private void Window_SourceInitialized(object sender, EventArgs e)
+        {
+            IntPtr handle = new WindowInteropHelper(this).Handle;
+            HwndSource source = HwndSource.FromHwnd(handle);
+            source.AddHook(HwndHook);
         }
     }
 
@@ -170,20 +222,25 @@ namespace OpeWin
 
         public static void GenerateDefaultData(DataTable table, int num_of_ope)
         {
-            table.Columns.Add("ID");
+            table.Columns.Add("ID", typeof(int));
             table.Columns.Add("Name");
             table.Columns.Add("HotKey");
             table.Columns.Add("HotKeyObject", typeof(HotKey));
             table.Columns.Add("ScriptBody");
 
+            table.Columns["ID"].Unique = true;
+            table.PrimaryKey = new DataColumn[] { table.Columns["ID"] };
+
             for (int idx = 0; idx < num_of_ope; idx++)
             {
-                table.Rows.Add(table.NewRow());
-                table.Rows[idx]["ID"] = idx + 1;
-                table.Rows[idx]["Name"] = "Ope" + (idx + 1).ToString();
-                table.Rows[idx]["HotKey"] = "None";
-                table.Rows[idx]["HotKeyObject"] = null;
-                table.Rows[idx]["ScriptBody"] = @"Ope:Print(""Hello world!"")";
+                DataRow row = table.NewRow();
+                row["ID"] = idx + 1;
+                row["Name"] = "Ope" + (idx + 1).ToString();
+                row["HotKey"] = "None";
+                row["HotKeyObject"] = null;
+                row["ScriptBody"] = @"Ope:Print(""Hello world!"")";
+
+                table.Rows.Add(row);
             }
         }
 
@@ -318,5 +375,11 @@ namespace OpeWin
 
             return key_str;
         }
+
+        [DllImport("user32.dll")]
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+        [DllImport("user32.dll")]
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
     }
 }

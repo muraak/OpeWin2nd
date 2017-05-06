@@ -23,16 +23,6 @@ namespace OpeWin
     {
         DataRow OpeInfo;
 
-        string ScriptHeader = "local untrusted;" + Environment.NewLine
-                            + "do" + Environment.NewLine
-                            + " local _ENV = {Ope = Ope}" + Environment.NewLine
-                            + " function untrusted()" + Environment.NewLine;
-
-        string ScriptFooter = Environment.NewLine
-                            + " end" + Environment.NewLine
-                            + "end" + Environment.NewLine
-                            + "untrusted()" + Environment.NewLine;
-
         public ScriptSettingWindow(DataRow ope_info)
         {
             InitializeComponent();
@@ -41,42 +31,16 @@ namespace OpeWin
 
             TbxScript.Text = OpeInfo["ScriptBody"].ToString();
 
-            Ope ope = Ope.GetInstance();
-            ope.Initialize(TbxOutput);
+            OpeScriptManager.GetInstance().Initialize(TbxOutput);
         }
 
         private void BtnDo_Click(object sender, RoutedEventArgs e)
         {
-            this.DoScript(TbxScript.Text);
+            OpeScriptManager.GetInstance().DoScript(
+                TbxScript.Text, 
+                int.Parse(OpeInfo["ID"].ToString()));
 
             TbxOutput.ScrollToEnd();
-        }
-
-        private void DoScript(String input)
-        {
-            NLua.Lua lua = new NLua.Lua();
-
-            Ope ope = Ope.GetInstance();
-
-            ope.UpdateCount(int.Parse(OpeInfo["ID"].ToString()));
-
-            lua["Ope"] = ope;
-
-            try
-            {
-                lua.DoString(ScriptHeader + input + ScriptFooter);
-            }
-            catch(Exception e)
-            {
-
-                 TbxOutput.Text += (e.Message + Environment.NewLine);
-            }
-            finally
-            {
-                lua.Close();
-            }
-
-            ope.EnqueuePrevId(int.Parse(OpeInfo["ID"].ToString()));
         }
 
         private void BtnOk_Click(object sender, RoutedEventArgs e)
