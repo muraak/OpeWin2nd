@@ -57,7 +57,8 @@
                     Margin="10, 0, 10, 10" 
                     Width="40" Height="20"
                     HorizontalAlignment="Left"
-                    x:Name="btnClear">Clear</Button>
+                    x:Name="btnClear"
+                    Click="btnClear_Click">Clear</Button>
         </Grid>
 
     </Grid>

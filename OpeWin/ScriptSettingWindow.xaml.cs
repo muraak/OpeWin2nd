@@ -39,8 +39,6 @@ namespace OpeWin
             OpeScriptManager.GetInstance().DoScript(
                 TbxScript.Text, 
                 int.Parse(OpeInfo["ID"].ToString()));
-
-            TbxOutput.ScrollToEnd();
         }
 
         private void BtnOk_Click(object sender, RoutedEventArgs e)

@@ -193,6 +193,11 @@ namespace OpeWin
             HwndSource source = HwndSource.FromHwnd(handle);
             source.AddHook(HwndHook);
         }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            TbxOutput.Clear();
+        }
     }
 
     class VisualTreeUtil
@@ -238,7 +243,7 @@ namespace OpeWin
                 row["Name"] = "Ope" + (idx + 1).ToString();
                 row["HotKey"] = "None";
                 row["HotKeyObject"] = null;
-                row["ScriptBody"] = @"Ope:Print(""Hello world!"")";
+                row["ScriptBody"] = @"Print(""Ope" + (idx + 1) + @""")";
 
                 table.Rows.Add(row);
             }
@@ -283,7 +288,7 @@ namespace OpeWin
                     dt = (DataTable)serializer.Deserialize(fs);
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 dt = null;
                 return;
