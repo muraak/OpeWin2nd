@@ -124,7 +124,8 @@ end</ScriptBody>
           <__key>140</__key>
         </HotKeyObject>
         <ScriptBody>MoveTo(0, 0.5)
-ResizeTo(0.5, 0.5)</ScriptBody>
+ResizeTo(0.5, 0.5)
+</ScriptBody>
       </OpeWinSettings>
     </DocumentElement>
   </diffgr:diffgram>

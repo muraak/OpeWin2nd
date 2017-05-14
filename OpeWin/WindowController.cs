@@ -78,15 +78,30 @@ namespace OpeWin
                 SWP_NOZORDER | SWP_NOMOVE);
         }
 
+        public static void Maximize()
+        {
+            IntPtr hWnd_top = GetForegroundWindow();
+            ShowWindow(hWnd_top, SW_MAXIMIZE);
+        }
+
+        public static void Minimize()
+        {
+            IntPtr hWnd_top = GetForegroundWindow();
+            ShowWindow(hWnd_top, SW_MINIMIZE);
+        }
+
+        public static void Restore()
+        {
+            IntPtr hWnd_top = GetForegroundWindow();
+            ShowWindow(hWnd_top, SW_RESTORE);
+        }
+
         public static void CommonProcForMoveAndResize(
             IntPtr hWnd,
             double rate_x, double rate_y,
             out int x, out int y,
             out RECT gap)
         {
-
-            ShowWindow(hWnd, SW_RESTORE);
-
             RECT curt_screen_rect;
             GetCurtScreenRect(hWnd, out curt_screen_rect);
 

@@ -87,17 +87,29 @@ namespace OpeWin
         public void Maximize()
         {
             Print("Maximize()");
+
+            WindowController.Maximize();
         }
 
         public void Minimize()
         {
             Print("Minimize()");
+
+            WindowController.Minimize();
+        }
+
+        public void Restore()
+        {
+            Print("Restore()");
+
+            WindowController.Restore();
         }
 
         public void MoveTo(double rate_x, double rate_y)
         {
             Print("MoveTo("+rate_x.ToString()+", "+rate_y.ToString()+")");
 
+            WindowController.Restore();
             WindowController.MoveTo(rate_x, rate_y);
         }
 
@@ -105,6 +117,7 @@ namespace OpeWin
         {
             Print("ResizeTo("+rate_width.ToString()+", "+rate_height.ToString()+")");
 
+            WindowController.Restore();
             WindowController.ResizeTo(rate_width, rate_height);
         }
 

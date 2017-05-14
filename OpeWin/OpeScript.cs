@@ -63,6 +63,7 @@ namespace OpeWin
                             + " Print = Print,"
                             + " Maximize = Maximize,"
                             + " Minimize = Minimize,"
+                            + " Restore = Restore,"
                             + " MoveTo = MoveTo,"
                             + " ResizeTo = ResizeTo,"
                             + " ChangeMonitorFw = ChangeMonitorFw,"
@@ -87,6 +88,7 @@ namespace OpeWin
             lua.RegisterFunction("Print", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("Print"));
             lua.RegisterFunction("Maximize", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("Maximize"));
             lua.RegisterFunction("Minimize", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("Minimize"));
+            lua.RegisterFunction("Restore", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("Restore"));
             lua.RegisterFunction("MoveTo", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("MoveTo"));
             lua.RegisterFunction("ResizeTo", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ResizeTo"));
             lua.RegisterFunction("ChangeMonitorFw", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ChangeMonitorFw"));
