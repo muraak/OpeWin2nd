@@ -18,6 +18,14 @@ namespace OpeWin
             public int bottom;
         }
 
+        public struct RATE
+        {
+            public double x;
+            public double y;
+            public double width;
+            public double height;
+        }
+
         public static void MoveTo(double rate_x, double rate_y)
         {
             try
@@ -42,6 +50,39 @@ namespace OpeWin
 
             SetWindowPos(
                 hWnd_top,
+                HWND_TOP,
+                x - gap.left, y - gap.top,
+                dummy, dummy,
+                SWP_NOZORDER | SWP_NOSIZE);
+        }
+
+        public static void MoveTo(IntPtr hWnd, int screen_no, double rate_x, double rate_y)
+        {
+            try
+            {
+                CheckRateThrowsArgumentException(ref rate_x, ref rate_y);
+            }
+            catch (ArgumentException)
+            {
+                return;
+            }
+
+            RECT win_rect;
+            GetWindowRect(hWnd, out win_rect);
+
+            RECT screen_rect;
+            GetScreenWorkAreaRect(screen_no, out screen_rect);
+
+            int x, y;
+            int dummy = 0;
+            x = RateToActualWidth(rate_x, screen_rect);
+            y = RateToActualHeight(rate_y, screen_rect);
+
+            RECT gap;
+            CalcGap(hWnd, out gap);
+
+            SetWindowPos(
+                hWnd,
                 HWND_TOP,
                 x - gap.left, y - gap.top,
                 dummy, dummy,
@@ -96,14 +137,93 @@ namespace OpeWin
             ShowWindow(hWnd_top, SW_RESTORE);
         }
 
-        public static void CommonProcForMoveAndResize(
+        public enum Direction
+        {
+            FORWARD,
+            BACKWORD
+        }
+
+        public static void ChangeMonitor(Direction direction)
+        {
+            IntPtr hWnd_top = GetForegroundWindow();
+
+            RECT win_rect;
+            
+            if (IsLaterWin10() == true)
+            {
+                DwmGetWindowAttribute(
+                    hWnd_top, DWMWA_EXTENDED_FRAME_BOUNDS,
+                    out win_rect, Marshal.SizeOf(typeof(RECT)));
+            }
+            else
+            {
+                GetWindowRect(hWnd_top, out win_rect);
+            }
+
+            RECT screen_rect;
+            int screen_no;
+
+            screen_no = GetCurtScreenRectAndReturnScreenNum(hWnd_top, out screen_rect);
+
+            RATE win_rate;
+            RectToRate(win_rect, screen_rect, out win_rate);
+
+            if (direction == Direction.FORWARD)
+            {
+                MoveTo(hWnd_top, GetNextScreenNum(screen_no), win_rate.x, win_rate.y);
+            }
+            else
+            {
+                MoveTo(hWnd_top, GetPrevScreenNum(screen_no), win_rate.x, win_rate.y);
+            }
+        }
+
+        private static int GetNextScreenNum(int curt_screen_no)
+        {
+            if ((curt_screen_no + 1) < Screen.AllScreens.Length - 1)
+            {
+                return (curt_screen_no + 1);
+            }
+            else
+            {
+                return Screen.AllScreens.Length - 1;
+            }
+        }
+
+        private static int GetPrevScreenNum(int curt_screen_no)
+        {
+            if ((curt_screen_no - 1) >= 0)
+            {
+                return (curt_screen_no - 1);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        private static void RectToRate(RECT win_rect, RECT screen_rect, out RATE win_rate)
+        {
+            win_rate = new RATE();
+
+            win_rate.x = ((double)win_rect.left - screen_rect.left) 
+                            / ((double)screen_rect.right - screen_rect.left);
+            win_rate.y = ((double)win_rect.top - screen_rect.top)
+                            / ((double)screen_rect.bottom - screen_rect.top);
+            win_rate.width = ((double)win_rect.right - win_rect.left)
+                            / ((double)screen_rect.right - screen_rect.left);
+            win_rate.height = ((double)win_rect.bottom - win_rect.top)
+                            / ((double)screen_rect.bottom - screen_rect.top);
+        }
+
+        private static void CommonProcForMoveAndResize(
             IntPtr hWnd,
             double rate_x, double rate_y,
             out int x, out int y,
             out RECT gap)
         {
             RECT curt_screen_rect;
-            GetCurtScreenRect(hWnd, out curt_screen_rect);
+            GetCurtScreenRectAndReturnScreenNum(hWnd, out curt_screen_rect);
 
             x = RateToActualWidth(rate_x, curt_screen_rect);
             y = RateToActualHeight(rate_y, curt_screen_rect);
@@ -132,7 +252,7 @@ namespace OpeWin
             rate_y = (rate_y <= 1.0) ? rate_y : 1.0;
         }
 
-        protected static void GetCurtScreenRect(IntPtr hWnd, out RECT rect)
+        protected static int GetCurtScreenRectAndReturnScreenNum(IntPtr hWnd, out RECT rect)
         {
             RECT windowRect;
             GetWindowRect(hWnd, out windowRect);
@@ -143,6 +263,9 @@ namespace OpeWin
             int overlapHeight = 0;
             int overlapArea = 0;
             int maxOverlapArea = 0;
+
+            int screen_num = 0;
+            int idx = 0;
 
             foreach (Screen screen in Screen.AllScreens)
             {
@@ -172,7 +295,11 @@ namespace OpeWin
                     rect.top = screen.WorkingArea.Y;
                     rect.right = screen.WorkingArea.Right;
                     rect.bottom = screen.WorkingArea.Bottom;
+
+                    screen_num = idx;
                 }
+
+                idx++;
             }
             
             /* If there are no overlap area, we set the primary monitor's rect. */
@@ -182,7 +309,11 @@ namespace OpeWin
                 rect.top = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Y;
                 rect.right = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Right;
                 rect.bottom = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Bottom;
+
+                screen_num = 0;
             }
+
+            return screen_num;
         }
 
         private static void CalcGap(IntPtr hWnd, out RECT gap)
@@ -246,6 +377,14 @@ namespace OpeWin
                 regkey.Close();
                 return false;
             }
+        }
+
+        private static void GetScreenWorkAreaRect(int screen_no, out RECT screen_rect)
+        {
+            screen_rect.left = Screen.AllScreens[screen_no].WorkingArea.Left;
+            screen_rect.right = Screen.AllScreens[screen_no].WorkingArea.Right;
+            screen_rect.top = Screen.AllScreens[screen_no].WorkingArea.Top;
+            screen_rect.bottom = Screen.AllScreens[screen_no].WorkingArea.Bottom;
         }
 
         /* See "https://msdn.microsoft.com/en-us/library/windows/desktop/ms633545(v=vs.85).aspx" *

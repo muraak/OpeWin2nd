@@ -23,7 +23,8 @@
             </Grid.RowDefinitions>
             <TextBox Grid.Row="0" x:Name="TbxScript"
                      Margin="10, 0, 10, 10"
-                     AcceptsReturn="True"></TextBox>
+                     AcceptsReturn="True"
+                     AcceptsTab="True"></TextBox>
             <Button Grid.Row="1"
                     x:Name="BtnDo"
                     Margin="10, 0, 10, 10" 

@@ -124,11 +124,17 @@ namespace OpeWin
         public void ChangeMonitorFw()
         {
             Print("ChangeMonitorFw()");
+
+            WindowController.Restore();
+            WindowController.ChangeMonitor(WindowController.Direction.FORWARD);
         }
 
         public void ChangeMonitorBw()
         {
             Print("ChangeMonitorBw()");
+
+            WindowController.Restore();
+            WindowController.ChangeMonitor(WindowController.Direction.BACKWORD);
         }
 
         public void ResetCount()
