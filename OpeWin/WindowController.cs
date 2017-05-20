@@ -28,32 +28,11 @@ namespace OpeWin
 
         public static void MoveTo(double rate_x, double rate_y)
         {
-            try
-            {
-                CheckRateThrowsArgumentException(ref rate_x, ref rate_y);
-            }
-            catch(ArgumentException)
-            {
-                return;
-            }
+            IntPtr hWnd = GetForegroundWindow();
+            RECT dummy;
+            int screen_num = GetCurtScreenRectAndReturnScreenNo(hWnd, out dummy);
 
-            IntPtr hWnd_top = GetForegroundWindow();
-
-            int x, y;
-            int dummy = 0;
-            RECT gap;
-
-            CommonProcForMoveAndResize(
-                hWnd_top,
-                rate_x, rate_y,
-                out x, out y, out gap);
-
-            SetWindowPos(
-                hWnd_top,
-                HWND_TOP,
-                x - gap.left, y - gap.top,
-                dummy, dummy,
-                SWP_NOZORDER | SWP_NOSIZE);
+            MoveTo(hWnd, screen_num, rate_x, rate_y);
         }
 
         public static void MoveTo(IntPtr hWnd, int screen_no, double rate_x, double rate_y)
@@ -75,8 +54,8 @@ namespace OpeWin
 
             int x, y;
             int dummy = 0;
-            x = RateToActualWidth(rate_x, screen_rect);
-            y = RateToActualHeight(rate_y, screen_rect);
+            x = screen_rect.left + RateToActualWidth(rate_x, screen_rect);
+            y = screen_rect.top + RateToActualHeight(rate_y, screen_rect);
 
             RECT gap;
             CalcGap(hWnd, out gap);
@@ -91,6 +70,15 @@ namespace OpeWin
 
         public static void ResizeTo(double rate_width, double rate_height)
         {
+            IntPtr hWnd = GetForegroundWindow();
+            RECT dummy;
+            int screen_no = GetCurtScreenRectAndReturnScreenNo(hWnd, out dummy);
+
+            ResizeTo(hWnd, screen_no, rate_width, rate_height);
+        }
+
+        public static void ResizeTo(IntPtr hWnd, int screen_no, double rate_width, double rate_height)
+        {
             try
             {
                 CheckRateThrowsArgumentException(ref rate_width, ref rate_height);
@@ -100,19 +88,22 @@ namespace OpeWin
                 return;
             }
 
-            IntPtr hWnd_top = GetForegroundWindow();
+            RECT win_rect;
+            GetWindowRect(hWnd, out win_rect);
+
+            RECT screen_rect;
+            GetScreenWorkAreaRect(screen_no, out screen_rect);
 
             int width, height;
             int dummy = 0;
-            RECT gap;
+            width = RateToActualWidth(rate_width, screen_rect);
+            height = RateToActualHeight(rate_height, screen_rect);
 
-            CommonProcForMoveAndResize(
-                hWnd_top,
-                rate_width, rate_height,
-                out width, out height, out gap);
+            RECT gap;
+            CalcGap(hWnd, out gap);
 
             SetWindowPos(
-                hWnd_top,
+                hWnd,
                 HWND_TOP,
                 dummy, dummy,
                 width + (gap.left + gap.right), height + (gap.top + gap.bottom),
@@ -161,21 +152,25 @@ namespace OpeWin
             }
 
             RECT screen_rect;
-            int screen_no;
+            int curt_screen_no;
 
-            screen_no = GetCurtScreenRectAndReturnScreenNum(hWnd_top, out screen_rect);
+            curt_screen_no = GetCurtScreenRectAndReturnScreenNo(hWnd_top, out screen_rect);
 
             RATE win_rate;
             RectToRate(win_rect, screen_rect, out win_rate);
 
+            int tgt_screen_no;
             if (direction == Direction.FORWARD)
             {
-                MoveTo(hWnd_top, GetNextScreenNum(screen_no), win_rate.x, win_rate.y);
+                tgt_screen_no = GetNextScreenNum(curt_screen_no);
             }
             else
             {
-                MoveTo(hWnd_top, GetPrevScreenNum(screen_no), win_rate.x, win_rate.y);
+                tgt_screen_no = GetPrevScreenNum(curt_screen_no);
             }
+
+            MoveTo(hWnd_top, tgt_screen_no, win_rate.x, win_rate.y);
+            ResizeTo(hWnd_top, tgt_screen_no, win_rate.width, win_rate.height);
         }
 
         private static int GetNextScreenNum(int curt_screen_no)
@@ -223,7 +218,7 @@ namespace OpeWin
             out RECT gap)
         {
             RECT curt_screen_rect;
-            GetCurtScreenRectAndReturnScreenNum(hWnd, out curt_screen_rect);
+            GetCurtScreenRectAndReturnScreenNo(hWnd, out curt_screen_rect);
 
             x = RateToActualWidth(rate_x, curt_screen_rect);
             y = RateToActualHeight(rate_y, curt_screen_rect);
@@ -252,7 +247,7 @@ namespace OpeWin
             rate_y = (rate_y <= 1.0) ? rate_y : 1.0;
         }
 
-        protected static int GetCurtScreenRectAndReturnScreenNum(IntPtr hWnd, out RECT rect)
+        protected static int GetCurtScreenRectAndReturnScreenNo(IntPtr hWnd, out RECT rect)
         {
             RECT windowRect;
             GetWindowRect(hWnd, out windowRect);
