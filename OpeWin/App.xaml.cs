@@ -7,10 +7,22 @@ using System.Windows;
 
 namespace OpeWin
 {
-    /// <summary>
-    /// App.xaml の相互作用ロジック
-    /// </summary>
     public partial class App : Application
     {
+        // NotifyIcon displayed on the task tray.
+        private NotifyIconWrapper notifyIcon;
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            this.notifyIcon = new NotifyIconWrapper();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            this.notifyIcon.Dispose();
+        }
     }
 }

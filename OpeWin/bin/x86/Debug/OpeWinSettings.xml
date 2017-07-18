@@ -193,7 +193,7 @@ end</ScriptBody>
           <__mod_keys>6</__mod_keys>
           <__key>140</__key>
         </HotKeyObject>
-        <ScriptBody>ChangeMonitorFw()</ScriptBody>
+        <ScriptBody>Maximize()</ScriptBody>
       </OpeWinSettings>
     </DocumentElement>
   </diffgr:diffgram>

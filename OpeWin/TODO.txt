@@ -1,0 +1,3 @@
+﻿
+・add debug mode to Ope class
+・make available [win] key to hot key
