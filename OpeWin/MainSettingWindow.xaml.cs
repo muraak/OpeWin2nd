@@ -27,6 +27,9 @@ namespace OpeWin
     {
         DataTable OpeInfoTable;
 
+        private KeyboardHook.LowLevelKeyboardProc _LLKeyboardProc;
+        private IntPtr hHandle;
+
         public MainSettingWindow()
         {
             InitializeComponent();
@@ -40,6 +43,9 @@ namespace OpeWin
             }
 
             dgOpeList.DataContext = OpeInfoTable;
+
+            _LLKeyboardProc = new KeyboardHook.LowLevelKeyboardProc(LLKeyboardProc);
+            hHandle = KeyboardHook.SetHook(_LLKeyboardProc);
         }
 
 
@@ -94,6 +100,11 @@ namespace OpeWin
             DataRowView selected_item = (DataRowView)dgOpeList.SelectedItem;
 
             ModifierKeys modifierKeys = Keyboard.Modifiers;
+            if(isBeingPressedWinKey)
+            {
+                modifierKeys |= ModifierKeys.Windows;
+            }
+
             HotKey hot_key = new HotKey();
             if (hot_key.CanSet(e, modifierKeys))
             {
@@ -197,6 +208,40 @@ namespace OpeWin
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             TbxOutput.Clear();
+        }
+
+        private bool isBeingPressedWinKey = false;
+        private IntPtr LLKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam)
+        {
+            if (nCode == 0)
+            {
+                if (((int)wParam & KeyboardHook.WM_KEYDOWN) == KeyboardHook.WM_KEYDOWN)
+                {
+                    KeyboardHook.KBDLLHOOKSTRUCT kbd
+                        = (KeyboardHook.KBDLLHOOKSTRUCT)Marshal.PtrToStructure(
+                            lParam, typeof(KeyboardHook.KBDLLHOOKSTRUCT));
+
+                    
+                    if (kbd.vkCode == 0x5B || kbd.vkCode == 0x5C)
+                    {
+                        if (((int)kbd.flags & 0x80) != 0)
+                        {
+                            /* Right or left winkey was released. */
+                            isBeingPressedWinKey = false;
+                            return (IntPtr)0;
+                        }
+                        else
+                        {
+                            /* Right or left winkey was pressed. */
+                            isBeingPressedWinKey = true;
+                            return (IntPtr)0;
+                        }
+                    }
+                }
+
+            }
+
+            return KeyboardHook.CallNextHookEx(hHandle, nCode, wParam, lParam);
         }
     }
 
@@ -335,17 +380,16 @@ namespace OpeWin
         {
             if (mod_keys == ModifierKeys.None)
                 return false;
-            if ((mod_keys & ModifierKeys.Windows) == ModifierKeys.Windows)
-                return false;
 
             Key key = (key_event_args.Key == Key.System ? key_event_args.SystemKey : key_event_args.Key);
-
+            
             String key_str = key.ToString();
 
             if (key_str == ""
                 || key.ToString().Contains("Ctrl")
                 || key.ToString().Contains("Shift")
-                || key.ToString().Contains("Alt"))
+                || key.ToString().Contains("Alt")
+                || key.ToString().Contains("Win"))
                 return false;
 
             return true;
@@ -375,6 +419,8 @@ namespace OpeWin
                 key_str += "Ctrl + ";
             if ((ModKeys & ModifierKeys.Shift) != ModifierKeys.None)
                 key_str += "Shift + ";
+            if ((ModKeys & ModifierKeys.Windows) != ModifierKeys.None)
+                key_str += "Win + ";
 
             key_str += (" " + Key.ToString());
 

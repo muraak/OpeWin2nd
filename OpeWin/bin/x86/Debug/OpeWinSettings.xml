@@ -28,10 +28,10 @@
       <OpeWinSettings diffgr:id="OpeWinSettings1" msdata:rowOrder="0" diffgr:hasChanges="inserted">
         <ID>1</ID>
         <Name>Ope1</Name>
-        <HotKey>Ctrl + Shift +  OemPlus</HotKey>
+        <HotKey>Alt + Win +  L</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
-          <__key>141</__key>
+          <__mod_keys>9</__mod_keys>
+          <__key>55</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
 	MoveTo(0, 0)
@@ -88,10 +88,10 @@ end</ScriptBody>
       <OpeWinSettings diffgr:id="OpeWinSettings4" msdata:rowOrder="3" diffgr:hasChanges="inserted">
         <ID>4</ID>
         <Name>Ope4</Name>
-        <HotKey>Ctrl + Shift +  OemQuestion</HotKey>
+        <HotKey>Alt +  LWin</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
-          <__key>145</__key>
+          <__mod_keys>1</__mod_keys>
+          <__key>70</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
 	MoveTo(0, 1/3)
