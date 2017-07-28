@@ -25,7 +25,7 @@ namespace OpeWin
     /// </summary>
     public partial class MainSettingWindow : Window
     {
-        DataTable OpeInfoTable;
+        private OpeInfoTable _OpeInfoTable;
 
         private KeyboardHook.LowLevelKeyboardProc _LLKeyboardProc;
         private IntPtr hHandle;
@@ -33,16 +33,10 @@ namespace OpeWin
         public MainSettingWindow()
         {
             InitializeComponent();
+            
+            _OpeInfoTable = OpeInfoTable.Load();
 
-            OpeInfoTable = OpeInfoTableManager.Load();
-
-            if (OpeInfoTable == null)
-            {
-                OpeInfoTable = new DataTable();
-                OpeInfoTableManager.GenerateDefaultData(OpeInfoTable);
-            }
-
-            dgOpeList.DataContext = OpeInfoTable;
+            dgOpeList.DataContext = _OpeInfoTable;
 
             _LLKeyboardProc = new KeyboardHook.LowLevelKeyboardProc(LLKeyboardProc);
             hHandle = KeyboardHook.SetHook(_LLKeyboardProc);
@@ -57,7 +51,7 @@ namespace OpeWin
                 case WM_HOTKEY:
 
                     OpeScriptManager.GetInstance().DoScript(
-                        OpeInfoTable.Rows.Find(wParam.ToInt32())["ScriptBody"].ToString(),
+                        _OpeInfoTable.Rows.Find(wParam.ToInt32())["ScriptBody"].ToString(),
                         wParam.ToInt32());
                     handled = true;
                     break;
@@ -90,7 +84,7 @@ namespace OpeWin
 
             int idx = int.Parse((dgOpeList.Columns[0].GetCellContent(curt_row) as TextBlock).Text);
 
-            ScriptSettingWindow script_setting_window = new ScriptSettingWindow(OpeInfoTable.Rows.Find(idx));
+            ScriptSettingWindow script_setting_window = new ScriptSettingWindow(_OpeInfoTable.Rows.Find(idx));
             script_setting_window.Owner = this;
             script_setting_window.ShowDialog();
         }
@@ -122,8 +116,11 @@ namespace OpeWin
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            
-            OpeInfoTableManager.Save(OpeInfoTable);
+            _OpeInfoTable.Save();
+
+            e.Cancel = true;
+            this.WindowState = System.Windows.WindowState.Minimized;
+            this.ShowInTaskbar = false;
         }
 
         private void btnStartDebug_Click(object sender, RoutedEventArgs e)
@@ -140,15 +137,9 @@ namespace OpeWin
                 grdMain.RowDefinitions[2].Height = (GridLength)gridLengthConverter.ConvertFrom("1*");
                 grdDebugSet.Visibility = Visibility.Visible;
 
-                OpeScriptManager.GetInstance().Initialize(TbxOutput);
+                OpeScriptManager.GetInstance().Initialize(/*TbxOutput*/);
 
-                foreach (DataRow item in OpeInfoTable.Rows)
-                {
-                    bool result = HotKey.RegisterHotKey(
-                        handle, int.Parse(item["ID"].ToString()),
-                        (uint)((HotKey)item["HotKeyObject"]).ModKeys,
-                        (uint)(KeyInterop.VirtualKeyFromKey(((HotKey)item["HotKeyObject"]).Key)));
-                }
+                HotKey.RegisterAll(_OpeInfoTable, handle);
             }
             else
             {
@@ -160,10 +151,7 @@ namespace OpeWin
 
                 OpeScriptManager.GetInstance().Initialize();
 
-                foreach (DataRow item in OpeInfoTable.Rows)
-                {
-                    HotKey.UnregisterHotKey(handle, int.Parse(item["ID"].ToString()));
-                }
+                HotKey.UnregisterAll(_OpeInfoTable, handle);
             }
         }
 
@@ -264,48 +252,49 @@ namespace OpeWin
         }
     }
 
-    class OpeInfoTableManager
+    [Serializable]
+    public class OpeInfoTable : DataTable
     {
         private const int MAX_NUM_OF_OPE = 9;
         private const string SETTING_FILE_NAME = "OpeWinSettings.xml";
         private const string TABLE_NAME = "OpeWinSettings";
 
-        public static void GenerateDefaultData(DataTable table, int num_of_ope)
+        public OpeInfoTable()
         {
-            table.Columns.Add("ID", typeof(int));
-            table.Columns.Add("Name");
-            table.Columns.Add("HotKey");
-            table.Columns.Add("HotKeyObject", typeof(HotKey));
-            table.Columns.Add("ScriptBody");
+            // Do nothing here!
+        }
 
-            table.Columns["ID"].Unique = true;
-            table.PrimaryKey = new DataColumn[] { table.Columns["ID"] };
+        public OpeInfoTable(bool is_first)
+        {
+            this.Columns.Add("ID", typeof(int));
+            this.Columns.Add("Name");
+            this.Columns.Add("HotKey");
+            this.Columns.Add("HotKeyObject", typeof(HotKey));
+            this.Columns.Add("ScriptBody");
 
-            for (int idx = 0; idx < num_of_ope; idx++)
+            this.Columns["ID"].Unique = true;
+            this.PrimaryKey = new DataColumn[] { this.Columns["ID"] };
+
+            for (int idx = 0; idx < MAX_NUM_OF_OPE; idx++)
             {
-                DataRow row = table.NewRow();
+                DataRow row = this.NewRow();
                 row["ID"] = idx + 1;
                 row["Name"] = "Ope" + (idx + 1).ToString();
                 row["HotKey"] = "None";
                 row["HotKeyObject"] = null;
                 row["ScriptBody"] = @"Print(""Ope" + (idx + 1) + @""")";
 
-                table.Rows.Add(row);
+                this.Rows.Add(row);
             }
         }
 
-        public static void GenerateDefaultData(DataTable table)
+        public void Save()
         {
-            GenerateDefaultData(table, MAX_NUM_OF_OPE);
+            this.TableName = TABLE_NAME;
+            SaveDataTableToXML(this, SETTING_FILE_NAME);
         }
 
-        public static void Save(DataTable table)
-        {
-            table.TableName = TABLE_NAME;
-            SaveDataTableToXML(table, SETTING_FILE_NAME);
-        }
-
-        public static void SaveDataTableToXML(DataTable dt, string xmlPath)
+        public static void SaveDataTableToXML(OpeInfoTable dt, string xmlPath)
         {
             using (FileStream fs
                 = new FileStream(xmlPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
@@ -315,25 +304,32 @@ namespace OpeWin
             }
         }
 
-        public static DataTable Load()
+        public static OpeInfoTable Load()
         {
-            DataTable table = null;
+            OpeInfoTable table = null;
             LoadDataTableFromXML(ref table, SETTING_FILE_NAME);
 
-            return table;
+            if(table != null)
+            {
+                return table;
+            }
+            else
+            {
+                return new OpeInfoTable(true);
+            }
         }
 
-        public static void LoadDataTableFromXML(ref DataTable dt, string xmlPath)
+        private static void LoadDataTableFromXML(ref OpeInfoTable dt, string xmlPath)
         {
             try
             {
                 using (FileStream fs = new FileStream(xmlPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(DataTable));
-                    dt = (DataTable)serializer.Deserialize(fs);
+                    XmlSerializer serializer = new XmlSerializer(typeof(OpeInfoTable));
+                    dt = (OpeInfoTable)serializer.Deserialize(fs);
                 }
             }
-            catch(Exception)
+            catch (Exception exception)
             {
                 dt = null;
                 return;
@@ -425,6 +421,25 @@ namespace OpeWin
             key_str += (" " + Key.ToString());
 
             return key_str;
+        }
+
+        public static void RegisterAll(DataTable OpeInfoTable, IntPtr hWnd)
+        {
+            foreach (DataRow item in OpeInfoTable.Rows)
+            {
+                bool result = HotKey.RegisterHotKey(
+                    hWnd, int.Parse(item["ID"].ToString()),
+                    (uint)((HotKey)item["HotKeyObject"]).ModKeys,
+                    (uint)(KeyInterop.VirtualKeyFromKey(((HotKey)item["HotKeyObject"]).Key)));
+            }
+        }
+
+        public static void UnregisterAll(DataTable OpeInfoTable, IntPtr hWnd)
+        {
+            foreach (DataRow item in OpeInfoTable.Rows)
+            {
+                HotKey.UnregisterHotKey(hWnd, int.Parse(item["ID"].ToString()));
+            }
         }
 
         [DllImport("user32.dll")]

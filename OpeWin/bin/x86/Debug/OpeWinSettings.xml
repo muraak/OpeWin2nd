@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<DataTable>
+<OpeInfoTable>
   <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="OpeWinSettings" msdata:UseCurrentLocale="true">
       <xs:complexType>
@@ -28,173 +28,179 @@
       <OpeWinSettings diffgr:id="OpeWinSettings1" msdata:rowOrder="0" diffgr:hasChanges="inserted">
         <ID>1</ID>
         <Name>Ope1</Name>
-        <HotKey>Alt + Win +  L</HotKey>
+        <HotKey>Alt + Shift +  OemPlus</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>9</__mod_keys>
-          <__key>55</__key>
+          <__mod_keys>5</__mod_keys>
+          <__key>141</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
 	MoveTo(0, 0)
-	ResizeTo(2/3 ,1)
+	ResizeTo(1/2, 1)
 elseif Count == 1 then
 	MoveTo(0, 0)
-	ResizeTo(1/2 ,1)
-elseif  Count == 2 then
+	ResizeTo(1/3, 1)
+elseif Count == 2 then
 	MoveTo(0, 0)
-	ResizeTo(1/3 ,1)
+	ResizeTo(2/3, 1)
 	ResetCount()
-end</ScriptBody>
+end
+
+</ScriptBody>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings2" msdata:rowOrder="1" diffgr:hasChanges="inserted">
         <ID>2</ID>
         <Name>Ope2</Name>
-        <HotKey>Ctrl + Shift +  Oem6</HotKey>
+        <HotKey>Alt + Shift +  Oem6</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>5</__mod_keys>
           <__key>151</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
-	MoveTo(1/3, 0)
-	ResizeTo(2/3 ,1)
-elseif Count == 1 then
 	MoveTo(1/2, 0)
-	ResizeTo(1/2 ,1)
-elseif  Count == 2 then
+	ResizeTo(1/2, 1)
+elseif Count == 1 then
 	MoveTo(2/3, 0)
- 	ResizeTo(1/3 ,1)
- 	ResetCount()
+	ResizeTo(1/3, 1)
+elseif Count == 2 then
+	MoveTo(1/3, 0)
+	ResizeTo(2/3, 1)
+	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings3" msdata:rowOrder="2" diffgr:hasChanges="inserted">
         <ID>3</ID>
         <Name>Ope3</Name>
-        <HotKey>Ctrl + Shift +  Oem3</HotKey>
+        <HotKey>Alt + Shift +  Oem3</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>5</__mod_keys>
           <__key>146</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
 	MoveTo(0, 0)
- 	ResizeTo(1 , 2/3)
+	ResizeTo(1, 1/2)
 elseif Count == 1 then
 	MoveTo(0, 0)
-	ResizeTo(1 , 1/2)
-elseif  Count == 2 then
+	ResizeTo(1, 1/3)
+elseif Count == 2 then
 	MoveTo(0, 0)
-	ResizeTo(1 , 1/3)
+	ResizeTo(1, 2/3)
 	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings4" msdata:rowOrder="3" diffgr:hasChanges="inserted">
         <ID>4</ID>
         <Name>Ope4</Name>
-        <HotKey>Alt +  LWin</HotKey>
+        <HotKey>Alt + Shift +  OemQuestion</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>1</__mod_keys>
-          <__key>70</__key>
+          <__mod_keys>5</__mod_keys>
+          <__key>145</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
-	MoveTo(0, 1/3)
-	ResizeTo(1 , 2/3)
-elseif Count == 1 then
 	MoveTo(0, 1/2)
-	ResizeTo(1 , 1/2)
-elseif  Count == 2 then
+	ResizeTo(1, 1/2)
+elseif Count == 1 then
 	MoveTo(0, 2/3)
-	ResizeTo(1 , 1/3)
+	ResizeTo(1, 1/3)
+elseif Count == 2 then
+	MoveTo(0, 1/3)
+	ResizeTo(1, 2/3)
 	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings5" msdata:rowOrder="4" diffgr:hasChanges="inserted">
         <ID>5</ID>
         <Name>Ope5</Name>
-        <HotKey>Ctrl + Shift +  P</HotKey>
+        <HotKey>Alt + Shift +  P</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>5</__mod_keys>
           <__key>59</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
 	MoveTo(0, 0)
-	ResizeTo(2/3 , 1/2)
+	ResizeTo(1/2, 1/2)
 elseif Count == 1 then
 	MoveTo(0, 0)
-	ResizeTo(1/2 , 1/2)
-elseif  Count == 2 then
+	ResizeTo(1/3, 1/3)
+elseif Count == 2 then
 	MoveTo(0, 0)
-	ResizeTo(1/3 , 1/2)
+	ResizeTo(2/3, 2/3)
 	ResetCount()
-end</ScriptBody>
+end
+</ScriptBody>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings6" msdata:rowOrder="5" diffgr:hasChanges="inserted">
         <ID>6</ID>
         <Name>Ope6</Name>
-        <HotKey>Ctrl + Shift +  OemOpenBrackets</HotKey>
+        <HotKey>Alt + Shift +  OemOpenBrackets</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>5</__mod_keys>
           <__key>149</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
-	MoveTo(1/3, 0)
-	ResizeTo(2/3 , 1/2)
-elseif Count == 1 then
 	MoveTo(1/2, 0)
-	ResizeTo(1/2 , 1/2)
-elseif  Count == 2 then
+	ResizeTo(1/2, 1/2)
+elseif Count == 1 then
 	MoveTo(2/3, 0)
-	ResizeTo(1/3 , 1/2)
+	ResizeTo(1/3, 1/3)
+elseif Count == 2 then
+	MoveTo(1/3, 0)
+	ResizeTo(2/3, 2/3)
 	ResetCount()
-end</ScriptBody>
+end
+</ScriptBody>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings7" msdata:rowOrder="6" diffgr:hasChanges="inserted">
         <ID>7</ID>
         <Name>Ope7</Name>
-        <HotKey>Ctrl + Shift +  OemPeriod</HotKey>
+        <HotKey>Alt + Shift +  OemPeriod</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>5</__mod_keys>
           <__key>144</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
 	MoveTo(0, 1/2)
-	ResizeTo(2/3 , 1/2)
+	ResizeTo(1/2, 1/2)
 elseif Count == 1 then
-	MoveTo(0, 1/2)
-	ResizeTo(1/2 , 1/2)
-elseif  Count == 2 then
-	MoveTo(0, 1/2)
-	ResizeTo(1/3 , 1/2)
+	MoveTo(0, 2/3)
+	ResizeTo(1/3, 1/3)
+elseif Count == 2 then
+	MoveTo(0, 1/3)
+	ResizeTo(2/3, 2/3)
 	ResetCount()
-end</ScriptBody>
+end
+</ScriptBody>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings8" msdata:rowOrder="7" diffgr:hasChanges="inserted">
         <ID>8</ID>
         <Name>Ope8</Name>
-        <HotKey>Ctrl + Shift +  OemBackslash</HotKey>
+        <HotKey>Alt + Shift +  OemBackslash</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>5</__mod_keys>
           <__key>154</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
-	MoveTo(1/3, 1/2)
-	ResizeTo(2/3 , 1/2)
-elseif Count == 1 then
 	MoveTo(1/2, 1/2)
-	ResizeTo(1/2 , 1/2)
-elseif  Count == 2 then
- 	MoveTo(2/3, 1/2)
-	ResizeTo(1/3 , 1/2)
- 	ResetCount()
-end</ScriptBody>
+	ResizeTo(1/2, 1/2)
+elseif Count == 1 then
+	MoveTo(2/3, 2/3)
+	ResizeTo(1/3, 1/3)
+elseif Count == 2 then
+	MoveTo(1/3, 1/3)
+	ResizeTo(2/3, 2/3)
+	ResetCount()
+end
+</ScriptBody>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings9" msdata:rowOrder="8" diffgr:hasChanges="inserted">
         <ID>9</ID>
         <Name>Ope9</Name>
-        <HotKey>Ctrl + Shift +  Oem1</HotKey>
+        <HotKey>Alt + Shift +  Oem1</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>5</__mod_keys>
           <__key>140</__key>
         </HotKeyObject>
         <ScriptBody>Maximize()</ScriptBody>
       </OpeWinSettings>
     </DocumentElement>
   </diffgr:diffgram>
-</DataTable>
+</OpeInfoTable>

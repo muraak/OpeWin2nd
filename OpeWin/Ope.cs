@@ -84,57 +84,97 @@ namespace OpeWin
             }
         }
 
+        private bool isSimulationMode()
+        {
+            return TbxOutput != null;
+        }
+
         public void Maximize()
         {
-            Print("Maximize()");
-
-            WindowController.Maximize();
+            if (isSimulationMode())
+            {
+                Print("Maximize()");
+            }
+            else
+            {
+                WindowController.Maximize();
+            }
         }
 
         public void Minimize()
         {
-            Print("Minimize()");
-
-            WindowController.Minimize();
+            if (isSimulationMode())
+            {
+                Print("Minimize()");
+            }
+            else
+            {
+                WindowController.Minimize();
+            }
         }
 
         public void Restore()
         {
-            Print("Restore()");
-
-            WindowController.Restore();
+            if (isSimulationMode())
+            {
+                Print("Restore()");
+            }
+            else
+            {
+                WindowController.Restore();
+            }
         }
 
         public void MoveTo(double rate_x, double rate_y)
         {
-            Print("MoveTo("+rate_x.ToString()+", "+rate_y.ToString()+")");
-
-            WindowController.Restore();
-            WindowController.MoveTo(rate_x, rate_y);
+            if (isSimulationMode())
+            {
+                Print("MoveTo(" + rate_x.ToString() + ", " + rate_y.ToString() + ")");
+            }
+            else
+            {
+                WindowController.Restore();
+                WindowController.MoveTo(rate_x, rate_y);
+            }
         }
 
         public void ResizeTo(double rate_width, double rate_height)
         {
-            Print("ResizeTo("+rate_width.ToString()+", "+rate_height.ToString()+")");
-
-            WindowController.Restore();
-            WindowController.ResizeTo(rate_width, rate_height);
+            if (isSimulationMode())
+            {
+                Print("ResizeTo(" + rate_width.ToString() + ", " + rate_height.ToString() + ")");
+            }
+            else
+            {
+                WindowController.Restore();
+                WindowController.ResizeTo(rate_width, rate_height);
+            }
         }
 
         public void ChangeMonitorFw()
         {
-            Print("ChangeMonitorFw()");
-
-            WindowController.Restore();
-            WindowController.ChangeMonitor(WindowController.Direction.FORWARD);
+            if (isSimulationMode())
+            {
+                Print("ChangeMonitorFw()");
+            }
+            else
+            {
+                WindowController.Restore();
+                WindowController.ChangeMonitor(WindowController.Direction.FORWARD);
+            }
         }
 
         public void ChangeMonitorBw()
         {
-            Print("ChangeMonitorBw()");
-
-            WindowController.Restore();
-            WindowController.ChangeMonitor(WindowController.Direction.BACKWORD);
+            if (isSimulationMode())
+            {
+                Print("ChangeMonitorBw()");
+            }
+            else
+            {
+                WindowController.Restore();
+                WindowController.ChangeMonitor(WindowController.Direction.BACKWORD);
+            }
         }
 
         public void ResetCount()
