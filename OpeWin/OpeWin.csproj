@@ -79,12 +79,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HotKey.cs" />
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="NotifyIconWrapper.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="NotifyIconWrapper.Designer.cs">
       <DependentUpon>NotifyIconWrapper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpeInfoTable.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="WindowController.cs" />
     <Page Include="MainSettingWindow.xaml">

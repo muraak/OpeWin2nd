@@ -25,8 +25,6 @@ namespace OpeWin
     /// </summary>
     public partial class MainSettingWindow : Window
     {
-        private OpeInfoTable _OpeInfoTable;
-
         private KeyboardHook.LowLevelKeyboardProc _LLKeyboardProc;
         private IntPtr hHandle;
 
@@ -34,12 +32,28 @@ namespace OpeWin
         {
             InitializeComponent();
             
-            _OpeInfoTable = OpeInfoTable.Load();
 
-            dgOpeList.DataContext = _OpeInfoTable;
+            dgOpeList.DataContext = OpeInfoTable.GetInstance();
 
             _LLKeyboardProc = new KeyboardHook.LowLevelKeyboardProc(LLKeyboardProc);
             hHandle = KeyboardHook.SetHook(_LLKeyboardProc);
+
+            OpeInfoTable.GetInstance().RegisterAllOpeToHotKey(GetHWnd());
+        }
+
+        public void RegisterHotkeys()
+        {
+            OpeInfoTable.GetInstance().RegisterAllOpeToHotKey(GetHWnd());
+        }
+
+        public void UnregisterHotkeys()
+        {
+            OpeInfoTable.GetInstance().UnregisterAllOpeToHotKey(GetHWnd());
+        }
+
+        public IntPtr GetHWnd()
+        {
+            return new WindowInteropHelper(this).Handle;
         }
 
 
@@ -50,9 +64,8 @@ namespace OpeWin
             {
                 case WM_HOTKEY:
 
-                    OpeScriptManager.GetInstance().DoScript(
-                        _OpeInfoTable.Rows.Find(wParam.ToInt32())["ScriptBody"].ToString(),
-                        wParam.ToInt32());
+                    OpeInfoTable.GetInstance().DoOpeScript(wParam.ToInt32());
+
                     handled = true;
                     break;
             }
@@ -84,7 +97,8 @@ namespace OpeWin
 
             int idx = int.Parse((dgOpeList.Columns[0].GetCellContent(curt_row) as TextBlock).Text);
 
-            ScriptSettingWindow script_setting_window = new ScriptSettingWindow(_OpeInfoTable.Rows.Find(idx));
+            ScriptSettingWindow script_setting_window 
+                = new ScriptSettingWindow(OpeInfoTable.GetInstance().GetRowById(idx));
             script_setting_window.Owner = this;
             script_setting_window.ShowDialog();
         }
@@ -116,18 +130,25 @@ namespace OpeWin
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _OpeInfoTable.Save();
-
+            OpeInfoTable.GetInstance().Save();
+            MyHide();
             e.Cancel = true;
-            this.WindowState = System.Windows.WindowState.Minimized;
-            this.ShowInTaskbar = false;
+        }
+
+        public void MyHide()
+        {
+            WindowState = System.Windows.WindowState.Minimized;
+            ShowInTaskbar = false;
+        }
+
+        public void MyShow()
+        {
+            WindowState = System.Windows.WindowState.Normal;
+            ShowInTaskbar = true;
         }
 
         private void btnStartDebug_Click(object sender, RoutedEventArgs e)
         {
-
-            IntPtr handle = new WindowInteropHelper(this).Handle;
-
             if (((Button)sender).Content.ToString() == "Start Debug")
             {
                 ((Button)sender).Content = "Stop Debug";
@@ -139,7 +160,7 @@ namespace OpeWin
 
                 OpeScriptManager.GetInstance().Initialize(/*TbxOutput*/);
 
-                HotKey.RegisterAll(_OpeInfoTable, handle);
+                OpeInfoTable.GetInstance().RegisterAllOpeToHotKey(GetHWnd());
             }
             else
             {
@@ -151,7 +172,7 @@ namespace OpeWin
 
                 OpeScriptManager.GetInstance().Initialize();
 
-                HotKey.UnregisterAll(_OpeInfoTable, handle);
+                OpeInfoTable.GetInstance().UnregisterAllOpeToHotKey(GetHWnd());
             }
         }
 
@@ -250,202 +271,5 @@ namespace OpeWin
             else
                 return FindParent<T>(parentObject);
         }
-    }
-
-    [Serializable]
-    public class OpeInfoTable : DataTable
-    {
-        private const int MAX_NUM_OF_OPE = 9;
-        private const string SETTING_FILE_NAME = "OpeWinSettings.xml";
-        private const string TABLE_NAME = "OpeWinSettings";
-
-        public OpeInfoTable()
-        {
-            // Do nothing here!
-        }
-
-        public OpeInfoTable(bool is_first)
-        {
-            this.Columns.Add("ID", typeof(int));
-            this.Columns.Add("Name");
-            this.Columns.Add("HotKey");
-            this.Columns.Add("HotKeyObject", typeof(HotKey));
-            this.Columns.Add("ScriptBody");
-
-            this.Columns["ID"].Unique = true;
-            this.PrimaryKey = new DataColumn[] { this.Columns["ID"] };
-
-            for (int idx = 0; idx < MAX_NUM_OF_OPE; idx++)
-            {
-                DataRow row = this.NewRow();
-                row["ID"] = idx + 1;
-                row["Name"] = "Ope" + (idx + 1).ToString();
-                row["HotKey"] = "None";
-                row["HotKeyObject"] = null;
-                row["ScriptBody"] = @"Print(""Ope" + (idx + 1) + @""")";
-
-                this.Rows.Add(row);
-            }
-        }
-
-        public void Save()
-        {
-            this.TableName = TABLE_NAME;
-            SaveDataTableToXML(this, SETTING_FILE_NAME);
-        }
-
-        public static void SaveDataTableToXML(OpeInfoTable dt, string xmlPath)
-        {
-            using (FileStream fs
-                = new FileStream(xmlPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
-            {
-                XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(dt.GetType());
-                serializer.Serialize(fs, dt);
-            }
-        }
-
-        public static OpeInfoTable Load()
-        {
-            OpeInfoTable table = null;
-            LoadDataTableFromXML(ref table, SETTING_FILE_NAME);
-
-            if(table != null)
-            {
-                return table;
-            }
-            else
-            {
-                return new OpeInfoTable(true);
-            }
-        }
-
-        private static void LoadDataTableFromXML(ref OpeInfoTable dt, string xmlPath)
-        {
-            try
-            {
-                using (FileStream fs = new FileStream(xmlPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                {
-                    XmlSerializer serializer = new XmlSerializer(typeof(OpeInfoTable));
-                    dt = (OpeInfoTable)serializer.Deserialize(fs);
-                }
-            }
-            catch (Exception exception)
-            {
-                dt = null;
-                return;
-            }
-        }
-    }
-
-    [Serializable]
-    public class HotKey
-    {
-        public int __mod_keys;
-
-        public int __key;
-
-        [XmlIgnore]
-        public ModifierKeys ModKeys
-        {
-            get
-            {
-                return (ModifierKeys)__mod_keys;
-            }
-
-            set
-            {
-                __mod_keys = (int)value;
-            }
-        }
-
-        [XmlIgnore]
-        public Key Key
-        {
-            get
-            {
-                return (Key)__key;
-            }
-
-            set
-            {
-                __key = (int)value;
-            }
-        }
-
-        public bool CanSet(KeyEventArgs key_event_args, ModifierKeys mod_keys)
-        {
-            if (mod_keys == ModifierKeys.None)
-                return false;
-
-            Key key = (key_event_args.Key == Key.System ? key_event_args.SystemKey : key_event_args.Key);
-            
-            String key_str = key.ToString();
-
-            if (key_str == ""
-                || key.ToString().Contains("Ctrl")
-                || key.ToString().Contains("Shift")
-                || key.ToString().Contains("Alt")
-                || key.ToString().Contains("Win"))
-                return false;
-
-            return true;
-        }
-
-        public void Set(KeyEventArgs key_event_args, ModifierKeys mod_keys)
-        {
-            if (CanSet(key_event_args, mod_keys) == true)
-            {
-                this.ModKeys = mod_keys;
-                this.Key = (key_event_args.Key == Key.System ?
-                    key_event_args.SystemKey : key_event_args.Key);
-            }
-            else
-            {
-                Exception e = new Exception("Can't set to HotKey.");
-            }
-        }
-
-        public string MyToString()
-        {
-            string key_str = "";
-
-            if ((ModKeys & ModifierKeys.Alt) != ModifierKeys.None)
-                key_str += "Alt + ";
-            if ((ModKeys & ModifierKeys.Control) != ModifierKeys.None)
-                key_str += "Ctrl + ";
-            if ((ModKeys & ModifierKeys.Shift) != ModifierKeys.None)
-                key_str += "Shift + ";
-            if ((ModKeys & ModifierKeys.Windows) != ModifierKeys.None)
-                key_str += "Win + ";
-
-            key_str += (" " + Key.ToString());
-
-            return key_str;
-        }
-
-        public static void RegisterAll(DataTable OpeInfoTable, IntPtr hWnd)
-        {
-            foreach (DataRow item in OpeInfoTable.Rows)
-            {
-                bool result = HotKey.RegisterHotKey(
-                    hWnd, int.Parse(item["ID"].ToString()),
-                    (uint)((HotKey)item["HotKeyObject"]).ModKeys,
-                    (uint)(KeyInterop.VirtualKeyFromKey(((HotKey)item["HotKeyObject"]).Key)));
-            }
-        }
-
-        public static void UnregisterAll(DataTable OpeInfoTable, IntPtr hWnd)
-        {
-            foreach (DataRow item in OpeInfoTable.Rows)
-            {
-                HotKey.UnregisterHotKey(hWnd, int.Parse(item["ID"].ToString()));
-            }
-        }
-
-        [DllImport("user32.dll")]
-        public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-
-        [DllImport("user32.dll")]
-        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
     }
 }
