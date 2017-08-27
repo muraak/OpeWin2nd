@@ -37,16 +37,14 @@ namespace OpeWin
 
             _LLKeyboardProc = new KeyboardHook.LowLevelKeyboardProc(LLKeyboardProc);
             hHandle = KeyboardHook.SetHook(_LLKeyboardProc);
-
-            OpeInfoTable.GetInstance().RegisterAllOpeToHotKey(GetHWnd());
         }
 
-        public void RegisterHotkeys()
+        private void RegisterHotkeys()
         {
             OpeInfoTable.GetInstance().RegisterAllOpeToHotKey(GetHWnd());
         }
 
-        public void UnregisterHotkeys()
+        private void UnregisterHotkeys()
         {
             OpeInfoTable.GetInstance().UnregisterAllOpeToHotKey(GetHWnd());
         }
@@ -131,20 +129,32 @@ namespace OpeWin
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             OpeInfoTable.GetInstance().Save();
+
+            OpeScript.GetInstance().Initialize();
+            
             MyHide();
             e.Cancel = true;
         }
 
         public void MyHide()
         {
-            WindowState = System.Windows.WindowState.Minimized;
+            WindowState = System.Windows.WindowState.Normal;
             ShowInTaskbar = false;
+            WindowStyle = WindowStyle.ToolWindow;
+            WindowState = System.Windows.WindowState.Minimized;
         }
 
         public void MyShow()
         {
             WindowState = System.Windows.WindowState.Normal;
             ShowInTaskbar = true;
+            WindowStyle = WindowStyle.SingleBorderWindow;
+        }
+
+        public void HideFromAltTabMenu()
+        {
+            Show();
+            MyHide();
         }
 
         private void btnStartDebug_Click(object sender, RoutedEventArgs e)
@@ -158,7 +168,7 @@ namespace OpeWin
                 grdMain.RowDefinitions[2].Height = (GridLength)gridLengthConverter.ConvertFrom("1*");
                 grdDebugSet.Visibility = Visibility.Visible;
 
-                OpeScriptManager.GetInstance().Initialize(/*TbxOutput*/);
+                OpeScript.GetInstance().Initialize(TbxOutput);
 
                 OpeInfoTable.GetInstance().RegisterAllOpeToHotKey(GetHWnd());
             }
@@ -170,7 +180,7 @@ namespace OpeWin
                 grdMain.RowDefinitions[2].Height = (GridLength)gridLengthConverter.ConvertFrom("0");
                 MakeEnableDgOpeList();
 
-                OpeScriptManager.GetInstance().Initialize();
+                OpeScript.GetInstance().Initialize();
 
                 OpeInfoTable.GetInstance().UnregisterAllOpeToHotKey(GetHWnd());
             }

@@ -31,12 +31,12 @@ namespace OpeWin
 
             TbxScript.Text = OpeInfo["ScriptBody"].ToString();
 
-            OpeScriptManager.GetInstance().Initialize(TbxOutput);
+            OpeScript.GetInstance().Initialize(TbxOutput);
         }
 
         private void BtnDo_Click(object sender, RoutedEventArgs e)
         {
-            OpeScriptManager.GetInstance().DoScript(
+            OpeScript.GetInstance().DoScript(
                 TbxScript.Text, 
                 int.Parse(OpeInfo["ID"].ToString()));
         }

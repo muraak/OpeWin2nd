@@ -14,9 +14,10 @@ namespace OpeWin
             InitializeComponent();
 
             Window = new MainSettingWindow();
-
-            Window.Show();
-            Window.MyHide();
+            Window.HideFromAltTabMenu();
+ 
+            OpeScript.GetInstance().Initialize();
+            OpeInfoTable.GetInstance().RegisterAllOpeToHotKey(Window.GetHWnd());
 
             ComponentDispatcher.ThreadPreprocessMessage += ThreadPreprocessMessageMethod;
 
@@ -48,13 +49,14 @@ namespace OpeWin
 
         public void toolStripMenuItem_Setting_Click(object sender, EventArgs e)
         {
+            OpeInfoTable.GetInstance().UnregisterAllOpeToHotKey(Window.GetHWnd());
             Window.MyShow();
         }
 
         public void toolStripMenuItem_Exit_Click(object sender, EventArgs e)
         {
-            Window.UnregisterHotkeys();
-
+            OpeInfoTable.GetInstance().UnregisterAllOpeToHotKey(Window.GetHWnd());
+            OpeScript.GetInstance().CloseLua();
             Application.Current.Shutdown();
         }
     }

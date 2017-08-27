@@ -146,7 +146,7 @@ namespace OpeWin
 
         public void DoOpeScript(int idx)
         {
-            OpeScriptManager.GetInstance().DoScript(
+            OpeScript.GetInstance().DoScript(
                         Rows.Find(idx)["ScriptBody"].ToString(),
                         idx);
         }

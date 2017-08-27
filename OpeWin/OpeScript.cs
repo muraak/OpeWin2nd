@@ -6,17 +6,18 @@ using System.Windows.Controls;
 
 namespace OpeWin
 {
-    class OpeScriptManager
+    class OpeScript
     {
         // Singleton Instance
-        private static OpeScriptManager Instance = new OpeScriptManager();
+        private static OpeScript Instance = new OpeScript();
+        private static NLua.Lua _Lua = new NLua.Lua();
 
-        private OpeScriptManager()
+        private OpeScript()
         {
             Initialize();
         }
 
-        public static OpeScriptManager GetInstance()
+        public static OpeScript GetInstance()
         {
             return Instance;
         }
@@ -33,16 +34,15 @@ namespace OpeWin
 
         public void DoScript(String input, int id)
         {
-            NLua.Lua lua = new NLua.Lua();
             Ope ope = Ope.GetInstance();
 
             ope.UpdateCount(id); // must be executed before csll PrepareEnv()
 
-            PrepareEnv(lua, ope);
+            PrepareEnv(_Lua, ope);
 
             try
             {
-                lua.DoString(ScriptHeader + input + ScriptFooter);
+                _Lua.DoString(ScriptHeader + input + ScriptFooter);
             }
             catch (Exception e)
             {
@@ -50,7 +50,7 @@ namespace OpeWin
             }
             finally
             {
-                lua.Close();
+                
             }
 
             ope.EnqueuePrevId(id);
@@ -94,6 +94,11 @@ namespace OpeWin
             lua.RegisterFunction("ChangeMonitorFw", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ChangeMonitorFw"));
             lua.RegisterFunction("ChangeMonitorBw", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ChangeMonitorBw"));
             lua.RegisterFunction("ResetCount", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ResetCount"));
+        }
+
+        public void CloseLua()
+        {
+            _Lua.Close();
         }
     }
 }
