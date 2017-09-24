@@ -54,24 +54,6 @@ namespace OpeWin
             return new WindowInteropHelper(this).Handle;
         }
 
-
-        private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            const int WM_HOTKEY = 0x0312;
-            switch (msg)
-            {
-                case WM_HOTKEY:
-
-                    OpeInfoTable.GetInstance().DoOpeScript(wParam.ToInt32());
-
-                    handled = true;
-                    break;
-            }
-
-            return IntPtr.Zero;
-        }
-
-
         private void dgOpeList_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             Style style = new Style(typeof(DataGridCell));
@@ -103,27 +85,29 @@ namespace OpeWin
 
         private void dgOpeList_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            ModifierKeys modifierKeys = Keyboard.Modifiers;
+
             DataRowView selected_item = (DataRowView)dgOpeList.SelectedItem;
 
-            ModifierKeys modifierKeys = Keyboard.Modifiers;
             if(isBeingPressedWinKey)
             {
                 modifierKeys |= ModifierKeys.Windows;
             }
 
-            HotKey hot_key = new HotKey();
-            if (hot_key.CanSet(e, modifierKeys))
+            if (HotKey.CanSet(e, modifierKeys))
             {
-                hot_key.Set(e, modifierKeys);
+                OpeInfoTable.SetHotkey(e, modifierKeys, selected_item.Row);
+                e.Handled = true;
             }
             else
             {
-                return;
-            }
+                if(HotKey.IsClearKey(e))
+                {
+                    OpeInfoTable.ClearHotKey(selected_item.Row);
+                }
 
-            selected_item.Row["HotKey"] = hot_key.MyToString();
-            selected_item.Row["HotKeyObject"] = hot_key;
-            e.Handled = true;
+                e.Handled = false;
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -138,17 +122,14 @@ namespace OpeWin
 
         public void MyHide()
         {
-            WindowState = System.Windows.WindowState.Normal;
-            ShowInTaskbar = false;
-            WindowStyle = WindowStyle.ToolWindow;
-            WindowState = System.Windows.WindowState.Minimized;
+            RegisterHotkeys();
+            Hide();
         }
 
         public void MyShow()
         {
-            WindowState = System.Windows.WindowState.Normal;
-            ShowInTaskbar = true;
-            WindowStyle = WindowStyle.SingleBorderWindow;
+            UnregisterHotkeys();
+            Show();
         }
 
         public void HideFromAltTabMenu()
@@ -215,13 +196,6 @@ namespace OpeWin
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-        }
-
-        private void Window_SourceInitialized(object sender, EventArgs e)
-        {
-            IntPtr handle = new WindowInteropHelper(this).Handle;
-            HwndSource source = HwndSource.FromHwnd(handle);
-            source.AddHook(HwndHook);
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)

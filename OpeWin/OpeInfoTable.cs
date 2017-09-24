@@ -107,6 +107,9 @@ namespace OpeWin
             {
                 foreach (DataRow item in Rows)
                 {
+                    if(item["HotKeyObject"] == DBNull.Value)
+                        continue;
+
                     bool result = HotKey.RegisterHotKey(
                         hWnd, int.Parse(item["ID"].ToString()),
                         (uint)((HotKey)item["HotKeyObject"]).ModKeys,
@@ -130,12 +133,9 @@ namespace OpeWin
             {
                 foreach (DataRow item in Rows)
                 {
-                    bool result = HotKey.UnregisterHotKey(hWnd, int.Parse(item["ID"].ToString()));
-
-                    if (result == false)
-                    {
-                        throw new HotKey.HotKeyException("HotKey unregistration was failed.");
-                    }
+                    // We don't care the failure of hotkey unregistration
+                    // because there is nothing to do for.
+                    HotKey.UnregisterHotKey(hWnd, int.Parse(item["ID"].ToString()));
                 }
             }
             catch (HotKey.HotKeyException exception)
@@ -154,6 +154,28 @@ namespace OpeWin
         public DataRow GetRowById(int idx)
         {
             return Rows.Find(idx);
+        }
+
+        public static void SetHotkey(KeyEventArgs e, ModifierKeys modifierKeys, DataRow row)
+        {
+            HotKey hot_key = new HotKey();
+            if (HotKey.CanSet(e, modifierKeys))
+            {
+                hot_key.Set(e, modifierKeys);
+            }
+            else
+            {
+                return;
+            }
+
+            row["HotKey"] = hot_key.MyToString();
+            row["HotKeyObject"] = hot_key;
+        }
+        
+        public static void ClearHotKey(DataRow row)
+        {
+            row["HotKey"] = HotKey.NOT_ASIGNED;
+            row["HotKeyObject"] = null;
         }
     }
 }

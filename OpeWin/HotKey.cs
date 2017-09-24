@@ -11,6 +11,8 @@ namespace OpeWin
     [Serializable]
     public class HotKey
     {
+        public const string NOT_ASIGNED = "not asigned";
+
         public int __mod_keys;
 
         public int __key;
@@ -43,7 +45,7 @@ namespace OpeWin
             }
         }
 
-        public bool CanSet(KeyEventArgs key_event_args, ModifierKeys mod_keys)
+        public static bool CanSet(KeyEventArgs key_event_args, ModifierKeys mod_keys)
         {
             if (mod_keys == ModifierKeys.None)
                 return false;
@@ -62,10 +64,16 @@ namespace OpeWin
             return true;
         }
 
+        public static bool IsClearKey(KeyEventArgs e)
+        {
+            return (e.Key == Key.Escape);
+        }
+
         public void Set(KeyEventArgs key_event_args, ModifierKeys mod_keys)
         {
             if (CanSet(key_event_args, mod_keys) == true)
             {
+
                 this.ModKeys = mod_keys;
                 this.Key = (key_event_args.Key == Key.System ?
                     key_event_args.SystemKey : key_event_args.Key);

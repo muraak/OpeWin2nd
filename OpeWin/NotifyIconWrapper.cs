@@ -17,10 +17,11 @@ namespace OpeWin
             Window.HideFromAltTabMenu();
  
             OpeScript.GetInstance().Initialize();
-            OpeInfoTable.GetInstance().RegisterAllOpeToHotKey(Window.GetHWnd());
 
             ComponentDispatcher.ThreadPreprocessMessage += ThreadPreprocessMessageMethod;
 
+            //Add events to task tray icon.
+            notifyIcon.DoubleClick += new EventHandler(TrayIcon_DoubleClicked);
             // Add click event to context menu items.
             this.toolStripMenuItem_Setting.Click += this.toolStripMenuItem_Setting_Click;
             this.toolStripMenuItem_Exit.Click += this.toolStripMenuItem_Exit_Click;
@@ -49,8 +50,7 @@ namespace OpeWin
 
         public void toolStripMenuItem_Setting_Click(object sender, EventArgs e)
         {
-            OpeInfoTable.GetInstance().UnregisterAllOpeToHotKey(Window.GetHWnd());
-            Window.MyShow();
+            OpenSetting();
         }
 
         public void toolStripMenuItem_Exit_Click(object sender, EventArgs e)
@@ -59,5 +59,17 @@ namespace OpeWin
             OpeScript.GetInstance().CloseLua();
             Application.Current.Shutdown();
         }
+
+        private void OpenSetting()
+        {
+            OpeInfoTable.GetInstance().UnregisterAllOpeToHotKey(Window.GetHWnd());
+            Window.MyShow();
+        }
+
+        private void TrayIcon_DoubleClicked(Object obj, EventArgs e)
+        {
+            OpenSetting();
+        }
+    
     }
 }
