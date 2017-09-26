@@ -15,7 +15,6 @@ namespace OpeWin
     {
         private static OpeInfoTable Instance = OpeInfoTable.Load();
 
-        private const int MAX_NUM_OF_OPE = 9;
         private const string SETTING_FILE_NAME = "OpeWinSettings.xml";
         private const string TABLE_NAME = "OpeWinSettings";
 
@@ -39,18 +38,6 @@ namespace OpeWin
 
             this.Columns["ID"].Unique = true;
             this.PrimaryKey = new DataColumn[] { this.Columns["ID"] };
-
-            for (int idx = 0; idx < MAX_NUM_OF_OPE; idx++)
-            {
-                DataRow row = this.NewRow();
-                row["ID"] = idx;
-                row["Name"] = "Ope" + idx.ToString();
-                row["HotKey"] = HotKey.NOT_ASIGNED;
-                row["HotKeyObject"] = null;
-                row["ScriptBody"] = @"Print(""Ope" + (idx + 1) + @""")";
-
-                this.Rows.Add(row);
-            }
         }
 
         public void AddRowAsDefault()
