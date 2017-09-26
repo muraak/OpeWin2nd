@@ -45,7 +45,7 @@ namespace OpeWin
                 DataRow row = this.NewRow();
                 row["ID"] = idx;
                 row["Name"] = "Ope" + idx.ToString();
-                row["HotKey"] = "None";
+                row["HotKey"] = HotKey.NOT_ASIGNED;
                 row["HotKeyObject"] = null;
                 row["ScriptBody"] = @"Print(""Ope" + (idx + 1) + @""")";
 
