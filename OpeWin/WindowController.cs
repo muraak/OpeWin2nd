@@ -354,7 +354,9 @@ namespace OpeWin
             {
                 // The key "CurrentMajorVersionNumber" was added from win10.
                 // So we can distinct later version by checking whether this key is exist or not.
+                // If this key is't exsist, below method will throw the NullReferenceException.
                 int major_version = (int)regkey.GetValue("CurrentMajorVersionNumber");
+
 
                 regkey.Close();
 

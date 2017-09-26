@@ -43,14 +43,48 @@ namespace OpeWin
             for (int idx = 0; idx < MAX_NUM_OF_OPE; idx++)
             {
                 DataRow row = this.NewRow();
-                row["ID"] = idx + 1;
-                row["Name"] = "Ope" + (idx + 1).ToString();
+                row["ID"] = idx;
+                row["Name"] = "Ope" + idx.ToString();
                 row["HotKey"] = "None";
                 row["HotKeyObject"] = null;
                 row["ScriptBody"] = @"Print(""Ope" + (idx + 1) + @""")";
 
                 this.Rows.Add(row);
             }
+        }
+
+        public void AddRowAsDefault()
+        {
+            DataRow row = this.NewRow();
+            row["ID"] = GetNewIdx();
+            row["Name"] = "New Ope";
+            row["HotKey"] = HotKey.NOT_ASIGNED;
+            row["HotKeyObject"] = null;
+            row["ScriptBody"] = @"Print(""ID:" + row["ID"].ToString() + @""")";
+
+            this.Rows.Add(row);
+        }
+
+        private int GetNewIdx()
+        {
+            int[] idxs = new int[Rows.Count];
+
+            for(int i = 0; i < Rows.Count; i++)
+            {
+                idxs[i] = (int)Rows[i]["ID"];
+            }
+
+            Array.Sort(idxs);
+
+            for(int i = 0; i < idxs.Length; i++)
+            {
+                if(idxs[i] != i)
+                {
+                    return i;
+                }
+            }
+            
+            return idxs.Length;
         }
 
         public void Save()
@@ -84,6 +118,16 @@ namespace OpeWin
             }
         }
 
+        public void RollBackBeforeEditing()
+        {
+            Instance.Rows.Clear();
+
+            foreach (DataRow dr in Load().Rows)
+            {
+                Instance.Rows.Add(dr.ItemArray);
+            }
+        }
+
         private static void LoadDataTableFromXML(ref OpeInfoTable dt, string xmlPath)
         {
             try
@@ -94,7 +138,7 @@ namespace OpeWin
                     dt = (OpeInfoTable)serializer.Deserialize(fs);
                 }
             }
-            catch (Exception exception)
+            catch
             {
                 dt = null;
                 return;
