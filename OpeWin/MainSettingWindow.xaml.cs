@@ -146,7 +146,6 @@ namespace OpeWin
 
         public void HideFromAltTabMenu()
         {
-            Show();
             MyHide();
         }
 
