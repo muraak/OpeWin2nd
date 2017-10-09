@@ -60,6 +60,7 @@ namespace OpeWin
                             + "do" + Environment.NewLine
                             + " local _ENV = {"
                             + " Count = Count,"
+                            + " Null = -1,"
                             + " Print = Print,"
                             + " Maximize = Maximize,"
                             + " Minimize = Minimize,"

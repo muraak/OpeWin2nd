@@ -37,33 +37,42 @@ namespace OpeWin
 
         public static void MoveTo(IntPtr hWnd, int screen_no, double rate_x, double rate_y)
         {
-            try
-            {
-                CheckRateThrowsArgumentException(ref rate_x, ref rate_y);
-            }
-            catch (ArgumentException)
-            {
-                return;
-            }
-
             RECT win_rect;
             GetWindowRect(hWnd, out win_rect);
 
             RECT screen_rect;
             GetScreenWorkAreaRect(screen_no, out screen_rect);
 
-            int x, y;
-            int dummy = 0;
-            x = screen_rect.left + RateToActualWidth(rate_x, screen_rect);
-            y = screen_rect.top + RateToActualHeight(rate_y, screen_rect);
-
             RECT gap;
             CalcGap(hWnd, out gap);
+
+            int x, y;
+            int dummy = 0;
+
+            if (rate_x >= 0.0 && rate_x <= 1.0)
+            {
+                x = screen_rect.left + RateToActualWidth(rate_x, screen_rect);
+                x = x - gap.left;
+            }
+            else
+            {
+                x = win_rect.left;
+            }
+
+            if (rate_y >= 0.0 && rate_y <= 1.0)
+            {
+                y = screen_rect.top + RateToActualHeight(rate_y, screen_rect);
+                y = y - gap.top;
+            }
+            else
+            {
+                y = win_rect.top;
+            }
 
             SetWindowPos(
                 hWnd,
                 HWND_TOP,
-                x - gap.left, y - gap.top,
+                x, y,
                 dummy, dummy,
                 SWP_NOZORDER | SWP_NOSIZE);
         }
@@ -79,34 +88,44 @@ namespace OpeWin
 
         public static void ResizeTo(IntPtr hWnd, int screen_no, double rate_width, double rate_height)
         {
-            try
-            {
-                CheckRateThrowsArgumentException(ref rate_width, ref rate_height);
-            }
-            catch (ArgumentException)
-            {
-                return;
-            }
-
             RECT win_rect;
             GetWindowRect(hWnd, out win_rect);
 
             RECT screen_rect;
             GetScreenWorkAreaRect(screen_no, out screen_rect);
 
-            int width, height;
-            int dummy = 0;
-            width = RateToActualWidth(rate_width, screen_rect);
-            height = RateToActualHeight(rate_height, screen_rect);
-
             RECT gap;
             CalcGap(hWnd, out gap);
+
+            int width, height;
+            int dummy = 0;
+
+            if (rate_width >= 0.0 && rate_width <= 1.0)
+            {
+                width = RateToActualWidth(rate_width, screen_rect);
+                width = width + (gap.left + gap.right);
+            }
+            else
+            {
+                width = win_rect.right - win_rect.left;
+            }
+
+            if (rate_height >= 0.0 && rate_height <= 1.0)
+            {
+                height = RateToActualHeight(rate_height, screen_rect);
+                height = height + (gap.top + gap.bottom);
+            }
+            else
+            {
+                height = win_rect.bottom - win_rect.top;
+            }
+
 
             SetWindowPos(
                 hWnd,
                 HWND_TOP,
                 dummy, dummy,
-                width + (gap.left + gap.right), height + (gap.top + gap.bottom),
+                width, height,
                 SWP_NOZORDER | SWP_NOMOVE);
         }
 
@@ -228,11 +247,15 @@ namespace OpeWin
 
         private static int RateToActualWidth(double rate, RECT screen_rect)
         {
+            if (rate < 0.0) rate = 0.0;
+            if (rate > 1.0) rate = 1.0;
             return (int)((double)(screen_rect.right - screen_rect.left) * rate);
         }
 
         private static int RateToActualHeight(double rate, RECT screen_rect)
         {
+            if (rate < 0.0) rate = 0.0;
+            if (rate > 1.0) rate = 1.0;
             return (int)((double)(screen_rect.bottom - screen_rect.top) * rate);
         }
 
