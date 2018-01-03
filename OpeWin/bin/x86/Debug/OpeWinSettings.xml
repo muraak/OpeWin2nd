@@ -25,12 +25,12 @@
   </xs:schema>
   <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
     <DocumentElement>
-      <OpeWinSettings diffgr:id="OpeWinSettings3" msdata:rowOrder="0" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings1" msdata:rowOrder="0" diffgr:hasChanges="inserted">
         <ID>0</ID>
         <Name>Left</Name>
-        <HotKey>Ctrl + Shift +  OemPlus</HotKey>
+        <HotKey>Alt + Win +  OemPlus</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>9</__mod_keys>
           <__key>141</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
@@ -45,12 +45,12 @@ elseif Count == 2 then
 	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings4" msdata:rowOrder="1" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings2" msdata:rowOrder="1" diffgr:hasChanges="inserted">
         <ID>1</ID>
         <Name>Right</Name>
-        <HotKey>Ctrl + Shift +  Oem6</HotKey>
+        <HotKey>Alt + Win +  Oem6</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>9</__mod_keys>
           <__key>151</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
@@ -65,12 +65,12 @@ elseif Count == 2 then
 	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings5" msdata:rowOrder="2" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings3" msdata:rowOrder="2" diffgr:hasChanges="inserted">
         <ID>2</ID>
         <Name>Up</Name>
-        <HotKey>Ctrl + Shift +  Oem3</HotKey>
+        <HotKey>Alt + Win +  Oem3</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>9</__mod_keys>
           <__key>146</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
@@ -85,12 +85,12 @@ elseif Count == 2 then
 	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings6" msdata:rowOrder="3" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings4" msdata:rowOrder="3" diffgr:hasChanges="inserted">
         <ID>3</ID>
         <Name>Down</Name>
-        <HotKey>Ctrl + Shift +  OemQuestion</HotKey>
+        <HotKey>Alt + Win +  OemQuestion</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>9</__mod_keys>
           <__key>145</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
@@ -105,12 +105,12 @@ elseif Count == 2 then
 	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings12" msdata:rowOrder="4" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings5" msdata:rowOrder="4" diffgr:hasChanges="inserted">
         <ID>4</ID>
         <Name>UpLeft</Name>
-        <HotKey>Ctrl + Shift +  P</HotKey>
+        <HotKey>Alt + Win +  P</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>9</__mod_keys>
           <__key>59</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
@@ -125,12 +125,12 @@ elseif Count == 2 then
 	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings13" msdata:rowOrder="5" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings6" msdata:rowOrder="5" diffgr:hasChanges="inserted">
         <ID>5</ID>
         <Name>UpRight</Name>
-        <HotKey>Ctrl + Shift +  OemOpenBrackets</HotKey>
+        <HotKey>Alt + Win +  OemOpenBrackets</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>9</__mod_keys>
           <__key>149</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
@@ -145,12 +145,12 @@ elseif Count == 2 then
 	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings14" msdata:rowOrder="6" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings7" msdata:rowOrder="6" diffgr:hasChanges="inserted">
         <ID>6</ID>
         <Name>DownLeft</Name>
-        <HotKey>Ctrl + Shift +  OemPeriod</HotKey>
+        <HotKey>Alt + Win +  OemPeriod</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>9</__mod_keys>
           <__key>144</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
@@ -165,12 +165,12 @@ elseif Count == 2 then
 	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings15" msdata:rowOrder="7" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings8" msdata:rowOrder="7" diffgr:hasChanges="inserted">
         <ID>7</ID>
         <Name>DownRight</Name>
-        <HotKey>Ctrl + Shift +  OemBackslash</HotKey>
+        <HotKey>Alt + Win +  OemBackslash</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>9</__mod_keys>
           <__key>154</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
@@ -185,12 +185,12 @@ elseif Count == 2 then
 	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings16" msdata:rowOrder="8" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings9" msdata:rowOrder="8" diffgr:hasChanges="inserted">
         <ID>8</ID>
         <Name>Maximize-Restore</Name>
-        <HotKey>Ctrl + Shift +  Oem1</HotKey>
+        <HotKey>Alt + Win +  Oem1</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-          <__mod_keys>6</__mod_keys>
+          <__mod_keys>9</__mod_keys>
           <__key>140</__key>
         </HotKeyObject>
         <ScriptBody>if Count == 0 then
@@ -199,6 +199,26 @@ elseif Count == 1 then
 	Restore()
 	ResetCount()
 end</ScriptBody>
+      </OpeWinSettings>
+      <OpeWinSettings diffgr:id="OpeWinSettings10" msdata:rowOrder="9" diffgr:hasChanges="inserted">
+        <ID>9</ID>
+        <Name>New Ope</Name>
+        <HotKey>Alt + Win +  Left</HotKey>
+        <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <__mod_keys>9</__mod_keys>
+          <__key>23</__key>
+        </HotKeyObject>
+        <ScriptBody>ChangeMonitorFw()</ScriptBody>
+      </OpeWinSettings>
+      <OpeWinSettings diffgr:id="OpeWinSettings11" msdata:rowOrder="10" diffgr:hasChanges="inserted">
+        <ID>10</ID>
+        <Name>New Ope</Name>
+        <HotKey>Alt + Win +  Right</HotKey>
+        <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <__mod_keys>9</__mod_keys>
+          <__key>25</__key>
+        </HotKeyObject>
+        <ScriptBody>ChangeMonitorBw()</ScriptBody>
       </OpeWinSettings>
     </DocumentElement>
   </diffgr:diffgram>

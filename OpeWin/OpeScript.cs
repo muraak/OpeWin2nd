@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
+using LuaInterface;
 
 namespace OpeWin
 {
@@ -10,7 +11,7 @@ namespace OpeWin
     {
         // Singleton Instance
         private static OpeScript Instance = new OpeScript();
-        private static NLua.Lua _Lua = new NLua.Lua();
+        private static Lua _Lua = new Lua();
 
         private OpeScript()
         {
@@ -78,7 +79,7 @@ namespace OpeWin
                                     + "end" + Environment.NewLine
                                     + "untrusted()" + Environment.NewLine;
 
-        private void PrepareEnv(NLua.Lua lua, Ope ope)
+        private void PrepareEnv(Lua lua, Ope ope)
         {
             // NOTICE: You must also change _ENV table in the ScriptHeader if you change following code. 
 
