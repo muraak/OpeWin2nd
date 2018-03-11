@@ -35,7 +35,7 @@ namespace OpeWin
             MoveTo(hWnd, screen_num, rate_x, rate_y);
         }
 
-        public static void MoveTo(IntPtr hWnd, int screen_no, double rate_x, double rate_y)
+        private static void MoveTo(IntPtr hWnd, int screen_no, double rate_x, double rate_y)
         {
             RECT win_rect;
             GetWindowRect(hWnd, out win_rect);
@@ -63,6 +63,55 @@ namespace OpeWin
             {
                 y = screen_rect.top + RateToActualHeight(rate_y, screen_rect);
                 y = y - gap.top;
+            }
+            else
+            {
+                y = win_rect.top;
+            }
+
+            SetWindowPos(
+                hWnd,
+                HWND_TOP,
+                x, y,
+                dummy, dummy,
+                SWP_NOZORDER | SWP_NOSIZE);
+        }
+
+        public static void MoveBy(double rate_x, double rate_y)
+        {
+            IntPtr hWnd = GetForegroundWindow();
+            RECT dummy;
+            int screen_num = GetCurtScreenRectAndReturnScreenNo(hWnd, out dummy);
+
+            MoveBy(hWnd, screen_num, rate_x, rate_y);
+        }
+
+        private static void MoveBy(IntPtr hWnd, int screen_no, double rate_x, double rate_y)
+        {
+            RECT win_rect;
+            GetWindowRect(hWnd, out win_rect);
+
+            RECT screen_rect;
+            GetScreenWorkAreaRect(screen_no, out screen_rect);
+
+            RECT gap;
+            CalcGap(hWnd, out gap);
+
+            int x, y;
+            int dummy = 0;
+
+            if (rate_x >= -1.0 && rate_x <= 1.0)
+            {
+                x = win_rect.left + RateToActualWidth(rate_x, screen_rect);
+            }
+            else
+            {
+                x = win_rect.left;
+            }
+
+            if (rate_y >= -1.0 && rate_y <= 1.0)
+            {
+                y = win_rect.top + RateToActualHeight(rate_y, screen_rect);
             }
             else
             {
@@ -114,6 +163,56 @@ namespace OpeWin
             {
                 height = RateToActualHeight(rate_height, screen_rect);
                 height = height + (gap.top + gap.bottom);
+            }
+            else
+            {
+                height = win_rect.bottom - win_rect.top;
+            }
+
+
+            SetWindowPos(
+                hWnd,
+                HWND_TOP,
+                dummy, dummy,
+                width, height,
+                SWP_NOZORDER | SWP_NOMOVE);
+        }
+
+        public static void ResizeBy(double rate_width, double rate_height)
+        {
+            IntPtr hWnd = GetForegroundWindow();
+            RECT dummy;
+            int screen_no = GetCurtScreenRectAndReturnScreenNo(hWnd, out dummy);
+
+            ResizeBy(hWnd, screen_no, rate_width, rate_height);
+        }
+
+        public static void ResizeBy(IntPtr hWnd, int screen_no, double rate_width, double rate_height)
+        {
+            RECT win_rect;
+            GetWindowRect(hWnd, out win_rect);
+
+            RECT screen_rect;
+            GetScreenWorkAreaRect(screen_no, out screen_rect);
+
+            RECT gap;
+            CalcGap(hWnd, out gap);
+
+            int width, height;
+            int dummy = 0;
+
+            if (rate_width >= -1.0 && rate_width <= 1.0)
+            {
+                width = (win_rect.right - win_rect.left) + RateToActualWidth(rate_width, screen_rect);
+            }
+            else
+            {
+                width = win_rect.right - win_rect.left;
+            }
+
+            if (rate_height >= -1.0 && rate_height <= 1.0)
+            {
+                height = (win_rect.bottom - win_rect.top) + RateToActualHeight(rate_height, screen_rect);
             }
             else
             {
@@ -247,15 +346,15 @@ namespace OpeWin
 
         private static int RateToActualWidth(double rate, RECT screen_rect)
         {
-            if (rate < 0.0) rate = 0.0;
-            if (rate > 1.0) rate = 1.0;
+            if (rate < -1.0) rate = 0.0;
+            if (rate > 2.0) rate = 1.0;
             return (int)((double)(screen_rect.right - screen_rect.left) * rate);
         }
 
         private static int RateToActualHeight(double rate, RECT screen_rect)
         {
-            if (rate < 0.0) rate = 0.0;
-            if (rate > 1.0) rate = 1.0;
+            if (rate < -1.0) rate = 0.0;
+            if (rate > 2.0) rate = 1.0;
             return (int)((double)(screen_rect.bottom - screen_rect.top) * rate);
         }
 

@@ -138,6 +138,19 @@ namespace OpeWin
             }
         }
 
+        public void MoveBy(double rate_x, double rate_y)
+        {
+            if (isSimulationMode())
+            {
+                Print("MoveBy(" + rate_x.ToString() + ", " + rate_y.ToString() + ")");
+            }
+            else
+            {
+                WindowController.Restore();
+                WindowController.MoveBy(rate_x, rate_y);
+            }
+        }
+
         public void ResizeTo(double rate_width, double rate_height)
         {
             if (isSimulationMode())
@@ -148,6 +161,19 @@ namespace OpeWin
             {
                 WindowController.Restore();
                 WindowController.ResizeTo(rate_width, rate_height);
+            }
+        }
+
+        public void ResizeBy(double rate_width, double rate_height)
+        {
+            if (isSimulationMode())
+            {
+                Print("ResizeBy(" + rate_width.ToString() + ", " + rate_height.ToString() + ")");
+            }
+            else
+            {
+                WindowController.Restore();
+                WindowController.ResizeBy(rate_width, rate_height);
             }
         }
 

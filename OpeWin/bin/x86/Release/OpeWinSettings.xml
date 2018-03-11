@@ -202,7 +202,7 @@ end</ScriptBody>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings10" msdata:rowOrder="9" diffgr:hasChanges="inserted">
         <ID>9</ID>
-        <Name>New Ope</Name>
+        <Name>ChangeMonitorFw</Name>
         <HotKey>Alt + Win +  Left</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <__mod_keys>9</__mod_keys>
@@ -212,13 +212,93 @@ end</ScriptBody>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings11" msdata:rowOrder="10" diffgr:hasChanges="inserted">
         <ID>10</ID>
-        <Name>New Ope</Name>
+        <Name>ChangeMonitorBw</Name>
         <HotKey>Alt + Win +  Right</HotKey>
         <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
           <__mod_keys>9</__mod_keys>
           <__key>25</__key>
         </HotKeyObject>
         <ScriptBody>ChangeMonitorBw()</ScriptBody>
+      </OpeWinSettings>
+      <OpeWinSettings diffgr:id="OpeWinSettings12" msdata:rowOrder="11" diffgr:hasChanges="inserted">
+        <ID>11</ID>
+        <Name>MobeByRight</Name>
+        <HotKey>Ctrl + Shift +  Right</HotKey>
+        <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <__mod_keys>6</__mod_keys>
+          <__key>25</__key>
+        </HotKeyObject>
+        <ScriptBody>MoveBy(0.1,0)</ScriptBody>
+      </OpeWinSettings>
+      <OpeWinSettings diffgr:id="OpeWinSettings13" msdata:rowOrder="12" diffgr:hasChanges="inserted">
+        <ID>12</ID>
+        <Name>MoveByLeft</Name>
+        <HotKey>Ctrl + Shift +  Left</HotKey>
+        <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <__mod_keys>6</__mod_keys>
+          <__key>23</__key>
+        </HotKeyObject>
+        <ScriptBody>MoveBy(-0.1,0)</ScriptBody>
+      </OpeWinSettings>
+      <OpeWinSettings diffgr:id="OpeWinSettings14" msdata:rowOrder="13" diffgr:hasChanges="inserted">
+        <ID>13</ID>
+        <Name>MoveByDown</Name>
+        <HotKey>Ctrl + Shift +  Down</HotKey>
+        <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <__mod_keys>6</__mod_keys>
+          <__key>26</__key>
+        </HotKeyObject>
+        <ScriptBody>MoveBy(0, 0.1)</ScriptBody>
+      </OpeWinSettings>
+      <OpeWinSettings diffgr:id="OpeWinSettings15" msdata:rowOrder="14" diffgr:hasChanges="inserted">
+        <ID>14</ID>
+        <Name>MoveByUp</Name>
+        <HotKey>Ctrl + Shift +  Up</HotKey>
+        <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <__mod_keys>6</__mod_keys>
+          <__key>24</__key>
+        </HotKeyObject>
+        <ScriptBody>MoveBy(0, -0.1)</ScriptBody>
+      </OpeWinSettings>
+      <OpeWinSettings diffgr:id="OpeWinSettings16" msdata:rowOrder="15" diffgr:hasChanges="inserted">
+        <ID>15</ID>
+        <Name>ResizeByIncW</Name>
+        <HotKey>Ctrl + Shift +  Oem6</HotKey>
+        <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <__mod_keys>6</__mod_keys>
+          <__key>151</__key>
+        </HotKeyObject>
+        <ScriptBody>ResizeBy(0.1, 0)</ScriptBody>
+      </OpeWinSettings>
+      <OpeWinSettings diffgr:id="OpeWinSettings17" msdata:rowOrder="16" diffgr:hasChanges="inserted">
+        <ID>16</ID>
+        <Name>ResizeByDecW</Name>
+        <HotKey>Ctrl + Shift +  OemPlus</HotKey>
+        <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <__mod_keys>6</__mod_keys>
+          <__key>141</__key>
+        </HotKeyObject>
+        <ScriptBody>ResizeBy(-0.1, 0)</ScriptBody>
+      </OpeWinSettings>
+      <OpeWinSettings diffgr:id="OpeWinSettings18" msdata:rowOrder="17" diffgr:hasChanges="inserted">
+        <ID>17</ID>
+        <Name>ResizeByIncH</Name>
+        <HotKey>Ctrl + Shift +  OemQuestion</HotKey>
+        <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <__mod_keys>6</__mod_keys>
+          <__key>145</__key>
+        </HotKeyObject>
+        <ScriptBody>ResizeBy(0, 0.1)</ScriptBody>
+      </OpeWinSettings>
+      <OpeWinSettings diffgr:id="OpeWinSettings19" msdata:rowOrder="18" diffgr:hasChanges="inserted">
+        <ID>18</ID>
+        <Name>ResizeByDecH</Name>
+        <HotKey>Ctrl + Shift +  Oem3</HotKey>
+        <HotKeyObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <__mod_keys>6</__mod_keys>
+          <__key>146</__key>
+        </HotKeyObject>
+        <ScriptBody>ResizeBy(0, -0.1)</ScriptBody>
       </OpeWinSettings>
     </DocumentElement>
   </diffgr:diffgram>

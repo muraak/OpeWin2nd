@@ -67,7 +67,9 @@ namespace OpeWin
                             + " Minimize = Minimize,"
                             + " Restore = Restore,"
                             + " MoveTo = MoveTo,"
+                            + " MoveBy = MoveBy,"
                             + " ResizeTo = ResizeTo,"
+                            + " ResizeBy = ResizeBy,"
                             + " ChangeMonitorFw = ChangeMonitorFw,"
                             + " ChangeMonitorBw = ChangeMonitorBw,"
                             + " ResetCount = ResetCount"
@@ -92,7 +94,9 @@ namespace OpeWin
             lua.RegisterFunction("Minimize", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("Minimize"));
             lua.RegisterFunction("Restore", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("Restore"));
             lua.RegisterFunction("MoveTo", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("MoveTo"));
+            lua.RegisterFunction("MoveBy", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("MoveBy"));
             lua.RegisterFunction("ResizeTo", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ResizeTo"));
+            lua.RegisterFunction("ResizeBy", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ResizeBy"));
             lua.RegisterFunction("ChangeMonitorFw", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ChangeMonitorFw"));
             lua.RegisterFunction("ChangeMonitorBw", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ChangeMonitorBw"));
             lua.RegisterFunction("ResetCount", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ResetCount"));
