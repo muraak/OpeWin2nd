@@ -4,28 +4,28 @@
 Opewin is a Windows desktop application that can control other application's placement on your desktop via HotKey.
 You can asign the HotKey and set the operations(we call that "Ope") executed when you put thier corresponding HotKey. 
 Each Ope can set by writing our DSL(we call that "OpeScript"). 
-
-
-# Adding Ope
-	1. Right click OpeWin icon on your task tray. 
-	2. Click "setting" menu.
-	3. Click "add" button on the OpeWin setting window.
-
-# Register hotkey
-	1. Move the cursor to line you want to set.
-	2. Press keys you want to set as hotkey.
-
-# Unregister hotkey
-	1. Move the cursor to line you want to set.
-	2. Press esc key.
+<br/>
+<br/>
 
 # Settings
+- To open the setting window, double click notification area icon following:<br/>
+![icon](img/notification_area_icon.png)
+<br/>
+<br/>
 
-# Definition of OpeScript
+# About OpeScript
+In this section, we describe the definition of OpeScript.<br/>
+By using them, you can control other App's window flexibly!
+<br/>
+<br/>
+
 ## Valuables
 |Valuable |Description |
 |---|---|
-|Count |Indicate count of times inputing same hot key repeatedly. |
+|Count |Indicate how many times the same hot key was inputted repeatedly.<br/>Note that this value was set as "0" when you input any hot key first time and incremented from the second time.|
+<br/>
+<br/>
+
 ## Functions
 |Function |Description |
 |---|---|
