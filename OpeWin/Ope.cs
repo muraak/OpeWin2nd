@@ -185,7 +185,6 @@ namespace OpeWin
             }
             else
             {
-                WindowController.Restore();
                 WindowController.ChangeMonitor(WindowController.Direction.FORWARD);
             }
         }
@@ -198,7 +197,6 @@ namespace OpeWin
             }
             else
             {
-                WindowController.Restore();
                 WindowController.ChangeMonitor(WindowController.Direction.BACKWORD);
             }
         }

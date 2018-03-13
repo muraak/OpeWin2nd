@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace OpeWin
@@ -257,6 +258,8 @@ namespace OpeWin
             IntPtr hWnd_top = GetForegroundWindow();
 
             RECT win_rect;
+
+            bool isMaxmized = IsMaximized(hWnd_top);
             
             if (IsLaterWin10() == true)
             {
@@ -289,6 +292,11 @@ namespace OpeWin
 
             MoveTo(hWnd_top, tgt_screen_no, win_rate.x, win_rate.y);
             ResizeTo(hWnd_top, tgt_screen_no, win_rate.width, win_rate.height);
+
+            if(isMaxmized)
+            {
+                Maximize();
+            }
         }
 
         private static int GetNextScreenNum(int curt_screen_no)
@@ -506,6 +514,14 @@ namespace OpeWin
             screen_rect.bottom = Screen.AllScreens[screen_no].WorkingArea.Bottom;
         }
 
+        private static bool IsMaximized(IntPtr hWnd)
+        {
+            WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
+            GetWindowPlacement(hWnd, ref wp);
+
+            return wp.showCmd == SW_MAXIMIZE;
+        }
+
         /* See "https://msdn.microsoft.com/en-us/library/windows/desktop/ms633545(v=vs.85).aspx" *
          * about this function.                                                                  */
         [DllImport("user32.dll")]
@@ -561,5 +577,20 @@ namespace OpeWin
         public const int SW_RESTORE = 9;
         public const int SW_HIDE = 0;
         public const int SW_SHOW = 5;
+
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowPlacement(
+            IntPtr hWnd,
+            ref WINDOWPLACEMENT lpwndpl);
+
+        private struct WINDOWPLACEMENT
+        {
+            public int length;
+            public int flags;
+            public int showCmd;
+            public Point ptMinPosition;
+            public Point ptMaxPosition;
+            public RECT rcNormalPosition;
+        }
     }
 }
