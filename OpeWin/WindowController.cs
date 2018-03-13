@@ -260,6 +260,7 @@ namespace OpeWin
             RECT win_rect;
 
             bool isMaxmized = IsMaximized(hWnd_top);
+            if (isMaxmized) Restore(); // without Restore(), such as MoveTo(), ResizeTo() etc.. don't work... 
             
             if (IsLaterWin10() == true)
             {
