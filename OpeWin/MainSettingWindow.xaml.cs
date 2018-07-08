@@ -65,7 +65,7 @@ namespace OpeWin
 
             dgOpeList.Columns[0].IsReadOnly = true;
             dgOpeList.Columns[1].IsReadOnly = false;
-            dgOpeList.Columns[2].IsReadOnly = true;
+            dgOpeList.Columns[2].IsReadOnly = false;
             dgOpeList.Columns[3].IsReadOnly = true;
             dgOpeList.Columns[4].IsReadOnly = true;
             
@@ -115,6 +115,12 @@ namespace OpeWin
                 if(HotKey.IsClearKey(e))
                 {
                     OpeInfoTable.ClearHotKey(selected_item.Row);
+                }
+
+                if(modifierKeys == ModifierKeys.None && e.Key == Key.F2)
+                {
+                    e.Handled = false;
+                    return;
                 }
 
                 e.Handled = false;
@@ -311,6 +317,53 @@ namespace OpeWin
             MyHide();
         }
 
+        private void dgOpeList_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
+        {
+            if (e.Column.Header.ToString() != "HotKey")
+            {
+                return;
+            }
+
+            if(e.EditingElement is TextBox)
+            {
+                if(((TextBox)e.EditingElement).Text.StartsWith("combo") == false)
+                {
+                    ((TextBox)e.EditingElement).Text = String.Format("combo({{}}, {0})", ComboKey.GetNextHighestPriority());
+                    ((TextBox)e.EditingElement).CaretIndex = "combo({".Length;
+                }
+            }
+        }
+
+        private void dgOpeList_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.Column.Header.ToString() != "HotKey")
+            {
+                return;
+            }
+
+            if(e.EditAction == DataGridEditAction.Cancel)
+            {
+                return;
+            }
+
+            if (e.EditingElement is TextBox)
+            {
+                if (OpeInfoTable.SetComboKey(((TextBox)e.EditingElement).Text, ((DataRowView)e.Row.DataContext).Row))
+                {
+                    e.Cancel = false;
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+
+            }
+        }
+
+        private void dgOpeList_LostFocus(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 
     class VisualTreeUtil

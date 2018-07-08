@@ -125,7 +125,7 @@ namespace OpeWin
                     dt = (OpeInfoTable)serializer.Deserialize(fs);
                 }
             }
-            catch
+            catch(Exception e)
             {
                 dt = null;
                 return;
@@ -140,15 +140,25 @@ namespace OpeWin
                 {
                     if(item["HotKeyObject"] == DBNull.Value)
                         continue;
-
-                    bool result = HotKey.RegisterHotKey(
-                        hWnd, int.Parse(item["ID"].ToString()),
-                        (uint)((HotKey)item["HotKeyObject"]).ModKeys,
-                        (uint)(KeyInterop.VirtualKeyFromKey(((HotKey)item["HotKeyObject"]).Key)));
-
-                    if (result == false)
+                    if (item["HotKeyObject"] is ComboKey)
                     {
-                        throw new HotKey.HotKeyException("HotKey registration was failed.");
+                        bool result = ComboKey.RegisterComboKeys((ComboKey)item["HotKeyObject"]);
+                        if (result == false)
+                        {
+                            throw new HotKey.HotKeyException(String.Format("ComboKey registration was failed(id:{0}).", item["ID"]));
+                        }
+                    }
+                    else
+                    {
+                        bool result = HotKey.RegisterHotKey(
+                            hWnd, int.Parse(item["ID"].ToString()),
+                            (uint)((HotKey)item["HotKeyObject"]).ModKeys,
+                            (uint)(KeyInterop.VirtualKeyFromKey(((HotKey)item["HotKeyObject"]).Key)));
+
+                        if (result == false)
+                        {
+                            throw new HotKey.HotKeyException(String.Format("HotKey registration was failed(id:{0}).", item["ID"]));
+                        }
                     }
                 }
             }
@@ -164,9 +174,16 @@ namespace OpeWin
             {
                 foreach (DataRow item in Rows)
                 {
-                    // We don't care the failure of hotkey unregistration
-                    // because there is nothing to do for.
-                    HotKey.UnregisterHotKey(hWnd, int.Parse(item["ID"].ToString()));
+                    if (item["HotkeyObject"] is ComboKey)
+                    {
+                        ComboKey.UnregisterComboKeys(item["HotkeyObject"] as ComboKey);
+                    }
+                    else
+                    {
+                        // We don't care the failure of hotkey unregistration
+                        // because there is nothing to do for.
+                        HotKey.UnregisterHotKey(hWnd, int.Parse(item["ID"].ToString()));
+                    }
                 }
             }
             catch (HotKey.HotKeyException exception)
@@ -201,6 +218,24 @@ namespace OpeWin
 
             row["HotKey"] = hot_key.MyToString();
             row["HotKeyObject"] = hot_key;
+        }
+
+        public static bool SetComboKey(string combo_setting, DataRow row)
+        {
+            List<int> combo_seq;
+            int priorty;
+
+            if (ComboKey.CanSet(combo_setting, out combo_seq, out priorty) == false)
+            {
+                return false;
+            }
+
+            ComboKey combo_key = new ComboKey((int)row["ID"], combo_seq, priorty);
+
+            row["HotKey"] = combo_key.MyToString();
+            row["HotKeyObject"] = combo_key;
+
+            return true;
         }
         
         public static void ClearHotKey(DataRow row)

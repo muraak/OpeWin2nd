@@ -34,8 +34,16 @@ namespace OpeWin
             switch (msg.message)
             {
                 case WM_HOTKEY:
-
-                    OpeInfoTable.GetInstance().DoOpeScript(msg.wParam.ToInt32());
+                    int id = msg.wParam.ToInt32();
+                    int combo_id;
+                    if (ComboKey.FindComboToFire(id, out combo_id))
+                    {
+                        OpeInfoTable.GetInstance().DoOpeScript(combo_id);
+                    }
+                    else
+                    {
+                        OpeInfoTable.GetInstance().DoOpeScript(id);
+                    }
                     handled = true;
                     break;
             }
