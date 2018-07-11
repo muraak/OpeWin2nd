@@ -78,6 +78,56 @@ namespace OpeWin
                 SWP_NOZORDER | SWP_NOSIZE);
         }
 
+        public static void VSMoveTo(double rate_x, double rate_y)
+        {
+            IntPtr hWnd = GetForegroundWindow();
+            RECT dummy;
+            int screen_num = GetCurtScreenRectAndReturnScreenNo(hWnd, out dummy);
+
+            VSMoveTo(hWnd, screen_num, rate_x, rate_y);
+        }
+
+        private static void VSMoveTo(IntPtr hWnd, int screen_no, double rate_x, double rate_y)
+        {
+            RECT win_rect;
+            GetWindowRect(hWnd, out win_rect);
+
+            RECT gap;
+            CalcGap(hWnd, out gap);
+
+            int x, y;
+
+            if (rate_x >= 0.0 && rate_x <= 1.0)
+            {
+                x = (int)(GetSystemMetrics(SM_XVIRTUALSCREEN) * rate_x);
+                x = x - gap.left;
+            }
+            else
+            {
+                x = win_rect.left;
+            }
+
+            if (rate_y >= 0.0 && rate_y <= 1.0)
+            {
+                y = (int)(GetSystemMetrics(SM_YVIRTUALSCREEN) * rate_y);
+                y = y - gap.top;
+            }
+            else
+            {
+                y = win_rect.top;
+            }
+
+            int dummy = 0;
+
+            Console.WriteLine(String.Format("VSMoveTo:{0},{1}", x, y));
+
+            SetWindowPos(
+                hWnd, HWND_TOP,
+                x,y,
+                dummy, dummy,
+                SWP_NOZORDER | SWP_NOSIZE);
+        }
+
         public static void MoveBy(double rate_x, double rate_y)
         {
             IntPtr hWnd = GetForegroundWindow();
@@ -174,6 +224,53 @@ namespace OpeWin
             SetWindowPos(
                 hWnd,
                 HWND_TOP,
+                dummy, dummy,
+                width, height,
+                SWP_NOZORDER | SWP_NOMOVE);
+        }
+
+        public static void VSResizeTo(double rate_width, double rate_height)
+        {
+            IntPtr hWnd = GetForegroundWindow();
+            RECT dummy;
+            int screen_no = GetCurtScreenRectAndReturnScreenNo(hWnd, out dummy);
+
+            VSResizeTo(hWnd, screen_no, rate_width, rate_height);
+        } 
+
+        private static void VSResizeTo(IntPtr hWnd, int screen_no, double rate_width, double rate_height)
+        {
+            RECT win_rect;
+            GetWindowRect(hWnd, out win_rect);
+
+            RECT gap;
+            CalcGap(hWnd, out gap);
+
+            int width, height;
+
+            if (rate_width >= 0.0 && rate_width <= 1.0)
+            {
+                width = (int)(GetSystemMetrics(SM_CXVIRTUALSCREEN) * rate_width);
+                width = width + (gap.left + gap.right);
+            }
+            else
+            {
+                width = win_rect.right - win_rect.left;
+            }
+
+            if (rate_height >= 0.0 && rate_height <= 1.0)
+            {
+                height = (int)(GetSystemMetrics(SM_CYVIRTUALSCREEN) * rate_height);
+                height = height + (gap.top + gap.bottom);
+            }
+            else
+            {
+                height = win_rect.bottom - win_rect.top;
+            }
+
+            int dummy = 0;
+            SetWindowPos(
+                hWnd, HWND_TOP,
                 dummy, dummy,
                 width, height,
                 SWP_NOZORDER | SWP_NOMOVE);
@@ -593,5 +690,14 @@ namespace OpeWin
             public Point ptMaxPosition;
             public RECT rcNormalPosition;
         }
+
+        /* See：https://msdn.microsoft.com/ja-jp/library/windows/desktop/ms724385(v=vs.85).aspx */
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetrics(int nIndex);
+        // constants for first parametor
+        public const int SM_XVIRTUALSCREEN = 76; //仮想画面の左端を取得する場合に指定
+        public const int SM_YVIRTUALSCREEN = 77; //仮想画面の上端を取得する場合に指定
+        public const int SM_CXVIRTUALSCREEN = 78; //仮想画面の幅を取得する場合に指定
+        public const int SM_CYVIRTUALSCREEN = 79; //仮想画面の高さを取得する場合に指定
     }
 }

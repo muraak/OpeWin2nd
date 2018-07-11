@@ -169,7 +169,11 @@ end</ScriptBody>
         <ScriptBody>if Count == 0 then
 	Maximize()
 elseif Count == 1 then
-	Restore()
+	VSMoveTo(0,0)
+	VSResizeTo(1,1)
+elseif Count == 2 then
+	VSMoveTo(0,0)
+	VSResizeTo(2/3,1)
 	ResetCount()
 end</ScriptBody>
       </OpeWinSettings>
