@@ -99,7 +99,7 @@ namespace OpeWin
 
             if (rate_x >= 0.0 && rate_x <= 1.0)
             {
-                x = (int)(GetSystemMetrics(SM_XVIRTUALSCREEN) * rate_x);
+                x = GetSystemMetrics(SM_XVIRTUALSCREEN) + (int)(GetSystemMetrics(SM_CXVIRTUALSCREEN) * rate_x);
                 x = x - gap.left;
             }
             else
@@ -109,7 +109,7 @@ namespace OpeWin
 
             if (rate_y >= 0.0 && rate_y <= 1.0)
             {
-                y = (int)(GetSystemMetrics(SM_YVIRTUALSCREEN) * rate_y);
+                y = GetSystemMetrics(SM_YVIRTUALSCREEN) + (int)(GetSystemMetrics(SM_CYVIRTUALSCREEN) * rate_y);
                 y = y - gap.top;
             }
             else
@@ -118,8 +118,6 @@ namespace OpeWin
             }
 
             int dummy = 0;
-
-            Console.WriteLine(String.Format("VSMoveTo:{0},{1}", x, y));
 
             SetWindowPos(
                 hWnd, HWND_TOP,
