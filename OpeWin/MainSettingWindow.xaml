@@ -33,7 +33,6 @@
                   ItemsSource="{Binding}" 
                   CanUserSortColumns="False" 
                   HeadersVisibility="Column"
-                  AlternatingRowBackground="LightCyan"
                   HorizontalGridLinesBrush="Transparent"
                   VerticalGridLinesBrush="LightGray"
                   LoadingRow="dgOpeList_LoadingRow"

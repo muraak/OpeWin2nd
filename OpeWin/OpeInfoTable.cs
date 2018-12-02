@@ -35,6 +35,9 @@ namespace OpeWin
             this.Columns.Add("HotKey");
             this.Columns.Add("HotKeyObject", typeof(HotKey));
             this.Columns.Add("ScriptBody");
+            this.Columns.Add("Enabled", typeof(bool));
+
+            this.Columns["Enabled"].DefaultValue = true;
 
             this.Columns["ID"].Unique = true;
             this.PrimaryKey = new DataColumn[] { this.Columns["ID"] };
@@ -97,11 +100,26 @@ namespace OpeWin
 
             if (table != null)
             {
+                addRuntimeData(ref table);
                 return table;
             }
             else
             {
                 return new OpeInfoTable(true);
+            }
+        }
+
+        private static void addRuntimeData(ref OpeInfoTable table)
+        {
+            if(table.Columns.Contains("Enabled") == false)
+            {
+                table.Columns.Add("Enabled", typeof(bool));
+                table.Columns["Enabled"].DefaultValue = true;
+
+                foreach(DataRow row in table.Rows)
+                {
+                    row["Enabled"] = true;
+                }
             }
         }
 
@@ -134,6 +152,8 @@ namespace OpeWin
 
         public void RegisterAllOpeToHotKey(IntPtr hWnd)
         {
+            bool hasProblem = false;
+
             try
             {
                 foreach (DataRow item in Rows)
@@ -145,7 +165,12 @@ namespace OpeWin
                         bool result = ComboKey.RegisterComboKeys((ComboKey)item["HotKeyObject"]);
                         if (result == false)
                         {
-                            throw new HotKey.HotKeyException(String.Format("ComboKey registration was failed(id:{0}).", item["ID"]));
+                            Rows[Rows.IndexOf(item)]["Enabled"] = false;
+                            hasProblem = true;
+                        }
+                        else
+                        {
+                            Rows[Rows.IndexOf(item)]["Enabled"] = true;
                         }
                     }
                     else
@@ -157,7 +182,12 @@ namespace OpeWin
 
                         if (result == false)
                         {
-                            throw new HotKey.HotKeyException(String.Format("HotKey registration was failed(id:{0}).", item["ID"]));
+                            Rows[Rows.IndexOf(item)]["Enabled"] = false;
+                            hasProblem = true;
+                        }
+                        else
+                        {
+                            Rows[Rows.IndexOf(item)]["Enabled"] = true;
                         }
                     }
                 }
@@ -165,6 +195,13 @@ namespace OpeWin
             catch(HotKey.HotKeyException exception)
             {
                 MessageBox.Show(exception.Message);
+            }
+
+            if(hasProblem)
+            {
+                MessageBox.Show("Some hotkey was failed to register." 
+                    + Environment.NewLine
+                    + "Please check setting that had been gray-outed.");
             }
         }
 

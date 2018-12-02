@@ -12,6 +12,7 @@
                 <xs:element name="HotKey" type="xs:string" minOccurs="0" />
                 <xs:element name="HotKeyObject" msdata:DataType="OpeWin.HotKey, OpeWin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" type="xs:anyType" minOccurs="0" />
                 <xs:element name="ScriptBody" type="xs:string" minOccurs="0" />
+                <xs:element name="Enabled" type="xs:boolean" default="true" minOccurs="0" />
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -41,6 +42,7 @@ elseif Count == 2 then
 	ResizeTo(2/3, 1)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings2" msdata:rowOrder="1" diffgr:hasChanges="inserted">
         <ID>1</ID>
@@ -58,6 +60,7 @@ elseif Count == 2 then
 	ResizeTo(2/3, 1)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings3" msdata:rowOrder="2" diffgr:hasChanges="inserted">
         <ID>2</ID>
@@ -75,6 +78,7 @@ elseif Count == 2 then
 	ResizeTo(1, 2/3)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings4" msdata:rowOrder="3" diffgr:hasChanges="inserted">
         <ID>3</ID>
@@ -92,6 +96,7 @@ elseif Count == 2 then
 	ResizeTo(1, 2/3)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings5" msdata:rowOrder="4" diffgr:hasChanges="inserted">
         <ID>4</ID>
@@ -109,6 +114,7 @@ elseif Count == 2 then
 	ResizeTo(2/3, 2/3)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings6" msdata:rowOrder="5" diffgr:hasChanges="inserted">
         <ID>5</ID>
@@ -126,6 +132,7 @@ elseif Count == 2 then
 	ResizeTo(2/3, 2/3)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings7" msdata:rowOrder="6" diffgr:hasChanges="inserted">
         <ID>6</ID>
@@ -143,6 +150,7 @@ elseif Count == 2 then
 	ResizeTo(2/3, 2/3)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings8" msdata:rowOrder="7" diffgr:hasChanges="inserted">
         <ID>7</ID>
@@ -160,6 +168,7 @@ elseif Count == 2 then
 	ResizeTo(2/3, 2/3)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings9" msdata:rowOrder="8" diffgr:hasChanges="inserted">
         <ID>8</ID>
@@ -176,6 +185,7 @@ elseif Count == 2 then
 	VSResizeTo(2/3,1)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings10" msdata:rowOrder="9" diffgr:hasChanges="inserted">
         <ID>9</ID>
@@ -183,6 +193,7 @@ end</ScriptBody>
         <HotKey>Alt + Win +  Left</HotKey>
         <HotKeyObject __mod_keys="9" __key="23" />
         <ScriptBody>ChangeMonitorFw()</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings11" msdata:rowOrder="10" diffgr:hasChanges="inserted">
         <ID>10</ID>
@@ -190,6 +201,7 @@ end</ScriptBody>
         <HotKey>Alt + Win +  Right</HotKey>
         <HotKeyObject __mod_keys="9" __key="25" />
         <ScriptBody>ChangeMonitorBw()</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings12" msdata:rowOrder="11" diffgr:hasChanges="inserted">
         <ID>11</ID>
@@ -197,6 +209,7 @@ end</ScriptBody>
         <HotKey>Ctrl + Shift +  Right</HotKey>
         <HotKeyObject __mod_keys="6" __key="25" />
         <ScriptBody>MoveBy(0.1,0)</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings13" msdata:rowOrder="12" diffgr:hasChanges="inserted">
         <ID>12</ID>
@@ -204,6 +217,7 @@ end</ScriptBody>
         <HotKey>Ctrl + Shift +  Left</HotKey>
         <HotKeyObject __mod_keys="6" __key="23" />
         <ScriptBody>MoveBy(-0.1,0)</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings14" msdata:rowOrder="13" diffgr:hasChanges="inserted">
         <ID>13</ID>
@@ -211,6 +225,7 @@ end</ScriptBody>
         <HotKey>Ctrl + Shift +  Down</HotKey>
         <HotKeyObject __mod_keys="6" __key="26" />
         <ScriptBody>MoveBy(0, 0.1)</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings15" msdata:rowOrder="14" diffgr:hasChanges="inserted">
         <ID>14</ID>
@@ -218,6 +233,7 @@ end</ScriptBody>
         <HotKey>Ctrl + Shift +  Up</HotKey>
         <HotKeyObject __mod_keys="6" __key="24" />
         <ScriptBody>MoveBy(0, -0.1)</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings16" msdata:rowOrder="15" diffgr:hasChanges="inserted">
         <ID>15</ID>
@@ -225,6 +241,7 @@ end</ScriptBody>
         <HotKey>Ctrl + Shift +  Oem6</HotKey>
         <HotKeyObject __mod_keys="6" __key="151" />
         <ScriptBody>ResizeBy(0.1, 0)</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings17" msdata:rowOrder="16" diffgr:hasChanges="inserted">
         <ID>16</ID>
@@ -232,6 +249,7 @@ end</ScriptBody>
         <HotKey>Ctrl + Shift +  OemPlus</HotKey>
         <HotKeyObject __mod_keys="6" __key="141" />
         <ScriptBody>ResizeBy(-0.1, 0)</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings18" msdata:rowOrder="17" diffgr:hasChanges="inserted">
         <ID>17</ID>
@@ -239,6 +257,7 @@ end</ScriptBody>
         <HotKey>Ctrl + Shift +  OemQuestion</HotKey>
         <HotKeyObject __mod_keys="6" __key="145" />
         <ScriptBody>ResizeBy(0, 0.1)</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings19" msdata:rowOrder="18" diffgr:hasChanges="inserted">
         <ID>18</ID>
@@ -246,6 +265,7 @@ end</ScriptBody>
         <HotKey>Ctrl + Shift +  Oem3</HotKey>
         <HotKeyObject __mod_keys="6" __key="146" />
         <ScriptBody>ResizeBy(0, -0.1)</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings20" msdata:rowOrder="19" diffgr:hasChanges="inserted">
         <ID>19</ID>
@@ -254,6 +274,7 @@ end</ScriptBody>
         <HotKeyObject __mod_keys="6" __key="140" />
         <ScriptBody>ResizeTo(2/3, 2/3)
 MoveTo((1 - 2/3)/2, (1 - 2/3)/2)</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings21" msdata:rowOrder="20" diffgr:hasChanges="inserted">
         <ID>20</ID>
@@ -273,6 +294,7 @@ elseif Count == 3 then
 	ResizeTo(-1, 1)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings22" msdata:rowOrder="21" diffgr:hasChanges="inserted">
         <ID>21</ID>
@@ -292,6 +314,7 @@ elseif Count == 3 then
 	ResizeTo(-1, 1)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings23" msdata:rowOrder="22" diffgr:hasChanges="inserted">
         <ID>22</ID>
@@ -315,6 +338,7 @@ elseif Count == 3 then
 	ResizeTo(-1, 1)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings24" msdata:rowOrder="23" diffgr:hasChanges="inserted">
         <ID>23</ID>
@@ -338,6 +362,7 @@ elseif Count == 3 then
 	ResizeTo(-1, 1)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings25" msdata:rowOrder="24" diffgr:hasChanges="inserted">
         <ID>24</ID>
@@ -357,6 +382,7 @@ elseif Count == 3 then
 	ResizeTo(1, -1)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings26" msdata:rowOrder="25" diffgr:hasChanges="inserted">
         <ID>25</ID>
@@ -380,6 +406,7 @@ elseif Count == 3 then
 	ResizeTo(1, -1)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings27" msdata:rowOrder="26" diffgr:hasChanges="inserted">
         <ID>26</ID>
@@ -399,6 +426,7 @@ elseif Count == 3 then
 	ResizeTo(1, -1)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
       <OpeWinSettings diffgr:id="OpeWinSettings28" msdata:rowOrder="27" diffgr:hasChanges="inserted">
         <ID>27</ID>
@@ -422,6 +450,7 @@ elseif Count == 3 then
 	ResizeTo(1, -1)
 	ResetCount()
 end</ScriptBody>
+        <Enabled>true</Enabled>
       </OpeWinSettings>
     </DocumentElement>
   </diffgr:diffgram>
