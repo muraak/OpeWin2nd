@@ -43,6 +43,18 @@
                   CellEditEnding="dgOpeList_CellEditEnding"
                   LostFocus="dgOpeList_LostFocus"
                   LostMouseCapture="dgOpeList_LostFocus">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Enabled}" Value="true">
+                            <Setter Property="Background" Value="LightCyan"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Enabled}" Value="false">
+                            <Setter Property="Background" Value="LightGray"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
         <Grid  Grid.Row="2" x:Name="grdDebugSet" Visibility="Hidden">
             <Grid.RowDefinitions>

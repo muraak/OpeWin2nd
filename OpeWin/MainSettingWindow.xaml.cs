@@ -64,15 +64,6 @@ namespace OpeWin
             dgOpeList.Columns[4].Visibility = Visibility.Hidden;
             dgOpeList.Columns[5].Visibility = Visibility.Hidden;
 
-            if ((bool)OpeInfoTable.GetInstance().Rows[(int)((DataRowView)e.Row.Item).Row.ItemArray[0]]["Enabled"] == true)
-            {
-                e.Row.Background = new SolidColorBrush(Colors.LightCyan);
-            }
-            else
-            {
-                e.Row.Background = new SolidColorBrush(Colors.LightPink);
-            }
-
             dgOpeList.Columns[0].IsReadOnly = true;
             dgOpeList.Columns[1].IsReadOnly = false;
             dgOpeList.Columns[2].IsReadOnly = false;
