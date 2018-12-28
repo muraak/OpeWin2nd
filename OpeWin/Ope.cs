@@ -84,6 +84,14 @@ namespace OpeWin
             }
         }
 
+        public void Inspect()
+        {
+            if(isSimulationMode())
+            {
+                Print(WindowController.Inspect());
+            }
+        }
+
         private bool isSimulationMode()
         {
             return TbxOutput != null;

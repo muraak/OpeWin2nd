@@ -19,6 +19,132 @@ namespace OpeWin
             public int bottom;
         }
 
+        [StructLayout(LayoutKind.Sequential, Pack = 4)]
+        public struct POINT
+        {
+            public int x;
+            public int y;
+        }
+
+        // size of a device name string
+        private const int CCHDEVICENAME = 32;
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
+        public class MONITORINFOEX
+        {
+            public int cbSize = Marshal.SizeOf(typeof(MONITORINFOEX));
+            public RECT rcMonitor = new RECT();
+            public RECT rcWork = new RECT();
+            public int dwFlags = 0;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+            public char[] szDevice = new char[32];
+        }
+
+        [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
+        struct DEVMODE
+        {
+            public const int CCHDEVICENAME = 32;
+            public const int CCHFORMNAME = 32;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHDEVICENAME)]
+            [System.Runtime.InteropServices.FieldOffset(0)]
+            public string dmDeviceName;
+            [System.Runtime.InteropServices.FieldOffset(32)]
+            public Int16 dmSpecVersion;
+            [System.Runtime.InteropServices.FieldOffset(34)]
+            public Int16 dmDriverVersion;
+            [System.Runtime.InteropServices.FieldOffset(36)]
+            public Int16 dmSize;
+            [System.Runtime.InteropServices.FieldOffset(38)]
+            public Int16 dmDriverExtra;
+            [System.Runtime.InteropServices.FieldOffset(40)]
+            public DM dmFields;
+
+            [System.Runtime.InteropServices.FieldOffset(44)]
+            Int16 dmOrientation;
+            [System.Runtime.InteropServices.FieldOffset(46)]
+            Int16 dmPaperSize;
+            [System.Runtime.InteropServices.FieldOffset(48)]
+            Int16 dmPaperLength;
+            [System.Runtime.InteropServices.FieldOffset(50)]
+            Int16 dmPaperWidth;
+            [System.Runtime.InteropServices.FieldOffset(52)]
+            Int16 dmScale;
+            [System.Runtime.InteropServices.FieldOffset(54)]
+            Int16 dmCopies;
+            [System.Runtime.InteropServices.FieldOffset(56)]
+            Int16 dmDefaultSource;
+            [System.Runtime.InteropServices.FieldOffset(58)]
+            Int16 dmPrintQuality;
+
+            [System.Runtime.InteropServices.FieldOffset(44)]
+            public POINTL dmPosition;
+            [System.Runtime.InteropServices.FieldOffset(52)]
+            public Int32 dmDisplayOrientation;
+            [System.Runtime.InteropServices.FieldOffset(56)]
+            public Int32 dmDisplayFixedOutput;
+
+            [System.Runtime.InteropServices.FieldOffset(60)]
+            public short dmColor; // See note below!
+            [System.Runtime.InteropServices.FieldOffset(62)]
+            public short dmDuplex; // See note below!
+            [System.Runtime.InteropServices.FieldOffset(64)]
+            public short dmYResolution;
+            [System.Runtime.InteropServices.FieldOffset(66)]
+            public short dmTTOption;
+            [System.Runtime.InteropServices.FieldOffset(68)]
+            public short dmCollate; // See note below!
+            [System.Runtime.InteropServices.FieldOffset(70)]
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHFORMNAME)]
+            public string dmFormName;
+            [System.Runtime.InteropServices.FieldOffset(102)]
+            public Int16 dmLogPixels;
+            [System.Runtime.InteropServices.FieldOffset(104)]
+            public Int32 dmBitsPerPel;
+            [System.Runtime.InteropServices.FieldOffset(108)]
+            public Int32 dmPelsWidth;
+            [System.Runtime.InteropServices.FieldOffset(112)]
+            public Int32 dmPelsHeight;
+            [System.Runtime.InteropServices.FieldOffset(116)]
+            public Int32 dmDisplayFlags;
+            [System.Runtime.InteropServices.FieldOffset(116)]
+            public Int32 dmNup;
+            [System.Runtime.InteropServices.FieldOffset(120)]
+            public Int32 dmDisplayFrequency;
+        }
+
+        struct POINTL
+        {
+            public Int32 x;
+            public Int32 y;
+        }
+
+        /// <summary>
+        /// Selects duplex or double-sided printing for printers capable of duplex printing. 
+        /// </summary>
+        internal enum DM : short
+        {
+            /// <summary>
+            /// Unknown setting.
+            /// </summary>
+            DMDUP_UNKNOWN = 0,
+
+            /// <summary>
+            /// Normal (nonduplex) printing.
+            /// </summary>
+            DMDUP_SIMPLEX = 1,
+
+            /// <summary>
+            /// Long-edge binding, that is, the long edge of the page is vertical.
+            /// </summary>
+            DMDUP_VERTICAL = 2,
+
+            /// <summary>
+            /// Short-edge binding, that is, the long edge of the page is horizontal.
+            /// </summary>
+            DMDUP_HORIZONTAL = 3,
+        }
+
         public struct RATE
         {
             public double x;
@@ -218,7 +344,6 @@ namespace OpeWin
                 height = win_rect.bottom - win_rect.top;
             }
 
-
             SetWindowPos(
                 hWnd,
                 HWND_TOP,
@@ -267,6 +392,7 @@ namespace OpeWin
             }
 
             int dummy = 0;
+
             SetWindowPos(
                 hWnd, HWND_TOP,
                 dummy, dummy,
@@ -314,7 +440,6 @@ namespace OpeWin
             {
                 height = win_rect.bottom - win_rect.top;
             }
-
 
             SetWindowPos(
                 hWnd,
@@ -393,6 +518,54 @@ namespace OpeWin
             {
                 Maximize();
             }
+        }
+
+        public static string Inspect()
+        {
+            string info = "";
+
+            info += "【Virtual Screen Information】" + System.Environment.NewLine;
+            info += String.Format("width:  {0}", GetSystemMetrics(SM_CXVIRTUALSCREEN)) + System.Environment.NewLine;
+            info += String.Format("height: {0}", GetSystemMetrics(SM_CYVIRTUALSCREEN)) + System.Environment.NewLine;
+            info += String.Format("Num of Screen: {0}", Screen.AllScreens.Length) + System.Environment.NewLine;
+
+            IntPtr hWnd = GetForegroundWindow();
+            RECT screen_rect;
+            int screen_num = GetCurtScreenRectAndReturnScreenNo(hWnd, out screen_rect);
+            GetWindowRect(hWnd, out screen_rect);
+            RECT rect_correct;
+            DwmGetWindowAttribute(
+                hWnd,
+                DWMWA_EXTENDED_FRAME_BOUNDS,
+                out rect_correct,
+                Marshal.SizeOf(typeof(RECT)));
+            RECT gap;
+            CalcGap(hWnd, out gap);
+
+            info += "【Current Screen Information】" + System.Environment.NewLine;
+            info += String.Format(" No: {0}", screen_num) + System.Environment.NewLine;
+            info += String.Format(" RECT(c#_wa): (left: {0}, right: {1}, top: {2}, bottom: {3})",
+                Screen.AllScreens[screen_num].WorkingArea.Left, Screen.AllScreens[screen_num].WorkingArea.Right,
+                Screen.AllScreens[screen_num].WorkingArea.Top, Screen.AllScreens[screen_num].WorkingArea.Bottom) + System.Environment.NewLine;
+            info += "【Current Window Information】" + System.Environment.NewLine;
+            info += String.Format(" RECT(usr32): (left: {0}, right: {1}, top: {2}, bottom: {3})",
+                screen_rect.left, screen_rect.right, screen_rect.top, screen_rect.bottom) + System.Environment.NewLine;
+            info += String.Format(" RECT(dwm): (left: {0}, right: {1}, top: {2}, bottom: {3})",
+                rect_correct.left, rect_correct.right, rect_correct.top, rect_correct.bottom) + System.Environment.NewLine;
+            POINT point_start;
+            POINT point_end;
+            point_start.x = rect_correct.left;
+            point_start.y = rect_correct.top;
+            point_end.x = rect_correct.right;
+            //point_end.y = rect_correct.bottom;
+            //PhysicalToLogicalPointForPerMonitorDPI(hWnd, ref point_start);
+            //PhysicalToLogicalPointForPerMonitorDPI(hWnd, ref point_end);
+            //info += String.Format(" RECT(dwm_p2l): (left: {0}, right: {1}, top: {2}, bottom: {3})",
+            //    point_start.x, point_end.x, point_start.y, point_end.y) + System.Environment.NewLine;
+            //info += String.Format(" Gap: (left: {0}, right: {1}, top: {2}, bottom: {3})",
+            //    gap.left, gap.right, gap.top, gap.bottom) + System.Environment.NewLine;
+
+            return info;
         }
 
         private static int GetNextScreenNum(int curt_screen_no)
@@ -551,18 +724,84 @@ namespace OpeWin
 
             RECT rect_correct = new RECT();
             DwmGetWindowAttribute(
-                hWnd, 
-                DWMWA_EXTENDED_FRAME_BOUNDS, 
-                out rect_correct, 
+                hWnd,
+                DWMWA_EXTENDED_FRAME_BOUNDS,
+                out rect_correct,
                 Marshal.SizeOf(typeof(RECT)));
 
             RECT rect_gapped = new RECT();
             GetWindowRect(hWnd, out rect_gapped);
 
+            Console.WriteLine(
+                String.Format("DwmGetWindowAttribute:(left:{0} top:{1} right:{2} bottom:{3} )",
+                rect_correct.left, rect_correct.top, rect_correct.right, rect_correct.bottom));
+            Console.WriteLine(
+                String.Format("GetWindowRect:(left:{0} top:{1} right:{2} bottom:{3} )",
+                rect_gapped.left, rect_gapped.top, rect_gapped.right, rect_gapped.bottom));
+
+            POINT start = new POINT();
+            POINT end = new POINT();
+            start.x = rect_correct.left;
+            start.y = rect_correct.top;
+            end.x = rect_correct.right;
+            end.y = rect_correct.bottom;
+
+            IntPtr startPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf(start));
+            IntPtr endPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf(end));
+
+            bool res1 = PhysicalToLogicalPointForPerMonitorDPI(hWnd, startPtr);
+            bool res2 = PhysicalToLogicalPointForPerMonitorDPI(hWnd, endPtr);
+
+            Console.WriteLine(
+                String.Format("DwmGetWindowAttribute_P2L:(left:{0} top:{1} right:{2} bottom:{3} )",
+                    start.x, start.y, end.x, end.y));
+
+            //rect_correct.left = start.x;
+            //rect_correct.top = start.y;
+            //rect_correct.right = end.x;
+            //rect_correct.bottom = end.y;
+
+            int scale = 0;
+
+            int res3 = GetScaleFactorForMonitor(hWnd, out scale);
+            Console.WriteLine("scale: {0}", scale);
+            double horzScale, vertScale;
+            calcScaleFactorForMonitor(hWnd, out horzScale, out vertScale);
+
             gap.left = rect_correct.left - rect_gapped.left;
             gap.top = rect_correct.top - rect_gapped.top;
             gap.right = rect_gapped.right - rect_correct.right;
             gap.bottom = rect_gapped.bottom - rect_correct.bottom;
+        }
+
+        private static void calcScaleFactorForMonitor(IntPtr hWnd, out double horzScale, out double vertScale)
+        {
+            // Get the monitor that the window is currently displayed on
+            // (where hWnd is a handle to the window of interest).
+            IntPtr hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
+
+            // Get the logical width and height of the monitor.
+            MONITORINFOEX miex = new MONITORINFOEX();
+            GetMonitorInfo(hMonitor, miex);
+            int cxLogical = (miex.rcMonitor.right - miex.rcMonitor.left);
+            int cyLogical = (miex.rcMonitor.bottom - miex.rcMonitor.top);
+
+            Console.WriteLine("logical: (width:{0}, height:{1}", cxLogical, cyLogical);
+
+            //// Get the physical width and height of the monitor.
+            //DEVMODE dm = new DEVMODE();
+            //dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
+            //dm.dmDriverExtra = 0;
+            //EnumDisplaySettingsA(miex.szDevice.ToString(), ENUM_CURRENT_SETTINGS, ref dm);
+            //int cxPhysical = dm.dmPelsWidth;
+            //int cyPhysical = dm.dmPelsHeight;
+
+            //// Calculate the scaling factor.
+            //horzScale = ((double)cxPhysical / (double)cxLogical);
+            //vertScale = ((double)cyPhysical / (double)cyLogical);
+
+            horzScale = 0;
+            vertScale = 0;
         }
 
         private static bool IsLaterWin10()
@@ -662,6 +901,38 @@ namespace OpeWin
             int cbAttribute);
         // constants for 2nd parametor
         public const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
+
+        /* I believe you can use this without any information! */
+        [DllImport("user32.dll")]
+        public static extern bool PhysicalToLogicalPointForPerMonitorDPI(
+            IntPtr hWnd,
+            IntPtr lpPoint);
+        /* I believe you can use this without any information! */
+        [DllImport("user32.dll")]
+        public static extern bool LogicalToPhysicalPointForPerMonitorDPI(
+            IntPtr hWnd,
+            ref POINT lpPoint);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr MonitorFromWindow(IntPtr hwnd, int dwFlags);
+        // constants for 2nd parametor
+        const int MONITOR_DEFAULTTONULL = 0;
+        const int MONITOR_DEFAULTTOPRIMARY = 1;
+        const int MONITOR_DEFAULTTONEAREST = 2;
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern bool GetMonitorInfo(IntPtr hMonitor, [In, Out]MONITORINFOEX lpmi);
+
+        [DllImport("user32.dll")]
+        static extern bool EnumDisplaySettingsA(string lpszDeviceName, int iModeNum, ref DEVMODE lpDevMode);
+        const int ENUM_CURRENT_SETTINGS = -1;
+        const int ENUM_REGISTRY_SETTINGS = -2;
+
+
+        [DllImport("Shcore.dll")]
+        public static extern int GetScaleFactorForMonitor(
+            IntPtr hMon,
+            out int pScale);
 
         /* See https://msdn.microsoft.com/ja-jp/library/windows/desktop/ms633548(v=vs.85).aspx */
         /* about this function.                                                                */

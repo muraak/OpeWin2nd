@@ -74,7 +74,8 @@ namespace OpeWin
                             + " ResizeBy = ResizeBy,"
                             + " ChangeMonitorFw = ChangeMonitorFw,"
                             + " ChangeMonitorBw = ChangeMonitorBw,"
-                            + " ResetCount = ResetCount"
+                            + " ResetCount = ResetCount,"
+                            + " Inspect = Inspect"
                             + "}" + Environment.NewLine
                             + " function untrusted()" + Environment.NewLine;
 
@@ -104,6 +105,7 @@ namespace OpeWin
             lua.RegisterFunction("ChangeMonitorFw", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ChangeMonitorFw"));
             lua.RegisterFunction("ChangeMonitorBw", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ChangeMonitorBw"));
             lua.RegisterFunction("ResetCount", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("ResetCount"));
+            lua.RegisterFunction("Inspect", Ope.GetInstance(), Ope.GetInstance().GetType().GetMethod("Inspect"));
         }
 
         public void CloseLua()
