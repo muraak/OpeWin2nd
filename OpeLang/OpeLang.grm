@@ -1,0 +1,97 @@
+﻿"Name"     = 'OpeLang Grammer'
+"Author"   = 'muraak'
+"Version"  = '0.0.1'
+"About"    = 'The DSL for OpeWin'
+
+"Start Symbol" = <Start>
+
+! -------------------------------------------------
+! Character Sets
+! -------------------------------------------------
+
+{WS}            = {Whitespace} - {CR} - {LF}
+{NonZeroNumber} = {Number} - [0]
+
+! -------------------------------------------------
+! Terminals
+! -------------------------------------------------
+
+! The following defines the Whitespace terminal using the {WS}
+! set - which excludes the carriage return and line feed 
+! characters
+
+Whitespace        = {WS}+
+NewLine           = {CR}{LF} | {CR} | {LF}
+UInteger          = '0'|{Number}+
+Double            = ('0'|({NonZeroNumber}{Number}*))'.'{Number}+
+Identifier        = {Letter}{AlphaNumeric}*
+
+
+! -------------------------------------------------
+! Rules
+! -------------------------------------------------
+
+! The following rule defines a series of newline tokens.
+! Use this rule rather than the newline terminal.
+
+<nl>     ::= NewLine <nl>          !One or more
+          |  NewLine
+
+<nl Opt> ::= NewLine <nl Opt>      !Zero or more
+          |  !Empty
+
+! <nl opt> removes blank lines before first statement
+
+<Start>   ::= <nl Opt> <Program>
+
+<Program> ::= <Sentence>
+            | <Program> <Sentence>
+            
+<Sentence> ::= <nl>
+             | <Ope> <nl>
+             | <IfStatment>
+
+<Ope> ::= Identifier '(' <Args> ')'
+
+<Args> ::= <Expression>
+         | <Args> ',' <Expression>
+         |
+
+<IfStatment> ::= 'if' <Condition> 'then' <Program> <ElseIf> 'endif'
+               | 'if' <Condition> 'then' <Program> <ElseIf> 'else' <Program> 'endif'
+               
+<ElseIf> ::= 'elsif' <Condition> 'then' <Program>
+           | <ElseIf> 'elsif' <Condition> 'then' <Program>
+           |
+
+<Condition> ::= <Expression> '==' <Expression>
+              | <Expression> '!=' <Expression>
+              | <Expression> '>=' <Expression>
+              | <Expression> '<=' <Expression>
+              | <Expression> '>' <Expression>
+              | <Expression> '<' <Expression>
+
+
+<Expression> ::= <Expression> '+' <Term>
+               | <Expression> '-' <Term>
+               | <Term>
+
+<Term> ::= <Term> '*' <Num>
+         | <Term> '/' <Num>
+         | <Num>
+
+<Num> ::= '-' <PositiveNum>
+        | <PositiveNum>
+        | '-' <Ope>
+        | <Ope>
+
+<PositiveNum> ::= UInteger
+                | Double
+   
+
+
+
+
+
+
+

@@ -42,6 +42,11 @@ namespace OpeWin
             PrevOpeIds.Clear();
         }
 
+        public int GetCount()
+        {
+            return Count;
+        }
+
         public void UpdateCount(int idx_of_sender)
         {
             if(PrevOpeIds.Count == 0)

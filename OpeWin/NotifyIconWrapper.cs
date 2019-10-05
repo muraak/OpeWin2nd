@@ -64,7 +64,7 @@ namespace OpeWin
         public void toolStripMenuItem_Exit_Click(object sender, EventArgs e)
         {
             OpeInfoTable.GetInstance().UnregisterAllOpeToHotKey(Window.GetHWnd());
-            OpeScript.GetInstance().CloseLua();
+            //OpeScript.GetInstance().CloseLua();
             Application.Current.Shutdown();
         }
 
