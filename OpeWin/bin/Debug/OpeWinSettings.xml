@@ -26,7 +26,7 @@
   </xs:schema>
   <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
     <DocumentElement>
-      <OpeWinSettings diffgr:id="OpeWinSettings20" msdata:rowOrder="0" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings1" msdata:rowOrder="0" diffgr:hasChanges="inserted">
         <ID>0</ID>
         <Name>Left</Name>
         <HotKey>Alt + Win +  OemPlus</HotKey>
@@ -44,7 +44,7 @@ elsif GetCount() == 2 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings21" msdata:rowOrder="1" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings2" msdata:rowOrder="1" diffgr:hasChanges="inserted">
         <ID>1</ID>
         <Name>Right</Name>
         <HotKey>Alt + Win +  Oem6</HotKey>
@@ -62,7 +62,7 @@ elsif GetCount() == 2 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings22" msdata:rowOrder="2" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings3" msdata:rowOrder="2" diffgr:hasChanges="inserted">
         <ID>2</ID>
         <Name>Up</Name>
         <HotKey>Alt + Win +  Oem3</HotKey>
@@ -80,7 +80,7 @@ elsif GetCount() == 2 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings23" msdata:rowOrder="3" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings4" msdata:rowOrder="3" diffgr:hasChanges="inserted">
         <ID>3</ID>
         <Name>Down</Name>
         <HotKey>Alt + Win +  OemQuestion</HotKey>
@@ -98,7 +98,7 @@ elsif GetCount() == 2 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings24" msdata:rowOrder="4" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings5" msdata:rowOrder="4" diffgr:hasChanges="inserted">
         <ID>4</ID>
         <Name>UpLeft</Name>
         <HotKey>Alt + Win +  P</HotKey>
@@ -116,7 +116,7 @@ elsif GetCount() == 2 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings25" msdata:rowOrder="5" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings6" msdata:rowOrder="5" diffgr:hasChanges="inserted">
         <ID>5</ID>
         <Name>UpRight</Name>
         <HotKey>Alt + Win +  OemOpenBrackets</HotKey>
@@ -134,7 +134,7 @@ elsif GetCount() == 2 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings26" msdata:rowOrder="6" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings7" msdata:rowOrder="6" diffgr:hasChanges="inserted">
         <ID>6</ID>
         <Name>DownLeft</Name>
         <HotKey>Alt + Win +  OemPeriod</HotKey>
@@ -152,7 +152,7 @@ elsif GetCount() == 2 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings27" msdata:rowOrder="7" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings8" msdata:rowOrder="7" diffgr:hasChanges="inserted">
         <ID>7</ID>
         <Name>DownRight</Name>
         <HotKey>Alt + Win +  OemBackslash</HotKey>
@@ -170,7 +170,7 @@ elsif GetCount() == 2 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings28" msdata:rowOrder="8" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings9" msdata:rowOrder="8" diffgr:hasChanges="inserted">
         <ID>8</ID>
         <Name>Maximize-Restore</Name>
         <HotKey>Alt + Win +  Oem1</HotKey>
@@ -183,23 +183,25 @@ elsif GetCount() == 1 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings29" msdata:rowOrder="9" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings10" msdata:rowOrder="9" diffgr:hasChanges="inserted">
         <ID>9</ID>
         <Name>ChangeMonitorFw</Name>
         <HotKey>Alt + Win +  Left</HotKey>
         <HotKeyObject __mod_keys="9" __key="23" />
-        <ScriptBody>ChangeMonitorFw()</ScriptBody>
+        <ScriptBody>ChangeMonitorFw()
+</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings30" msdata:rowOrder="10" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings11" msdata:rowOrder="10" diffgr:hasChanges="inserted">
         <ID>10</ID>
         <Name>ChangeMonitorBw</Name>
         <HotKey>Alt + Win +  Right</HotKey>
         <HotKeyObject __mod_keys="9" __key="25" />
-        <ScriptBody>ChangeMonitorBw()</ScriptBody>
+        <ScriptBody>ChangeMonitorBw()
+</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings31" msdata:rowOrder="11" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings12" msdata:rowOrder="11" diffgr:hasChanges="inserted">
         <ID>20</ID>
         <Name>Left Up Combo</Name>
         <HotKey>combo({0, 2}, 1)</HotKey>
@@ -219,7 +221,7 @@ elsif GetCount() == 3 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings32" msdata:rowOrder="12" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings13" msdata:rowOrder="12" diffgr:hasChanges="inserted">
         <ID>21</ID>
         <Name>Right Up Combo</Name>
         <HotKey>combo({1, 2}, 2)</HotKey>
@@ -239,7 +241,7 @@ elsif GetCount() == 3 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings33" msdata:rowOrder="13" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings14" msdata:rowOrder="13" diffgr:hasChanges="inserted">
         <ID>22</ID>
         <Name>Left Down Combo</Name>
         <HotKey>combo({0, 3}, 3)</HotKey>
@@ -247,7 +249,7 @@ endif</ScriptBody>
           <Combo Id="0" />
           <Combo Id="3" />
         </HotKeyObject>
-        <ScriptBody>if GeCount() == 0 then
+        <ScriptBody>if GetCount() == 0 then
 	MoveTo(-1, 1-2/3)
 	ResizeTo(-1, 2/3)
 elsif GetCount() == 1 then
@@ -263,7 +265,7 @@ elsif GetCount() == 3 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings34" msdata:rowOrder="14" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings15" msdata:rowOrder="14" diffgr:hasChanges="inserted">
         <ID>23</ID>
         <Name>Right Down Combo</Name>
         <HotKey>combo({1, 3}, 4)</HotKey>
@@ -271,7 +273,7 @@ endif</ScriptBody>
           <Combo Id="1" />
           <Combo Id="3" />
         </HotKeyObject>
-        <ScriptBody>if Count == 0 then
+        <ScriptBody>if GetCount() == 0 then
 	MoveTo(-1, 1-2/3)
 	ResizeTo(-1, 2/3)
 elsif GetCount() == 1 then
@@ -287,7 +289,7 @@ elsif GetCount() == 3 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings35" msdata:rowOrder="15" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings16" msdata:rowOrder="15" diffgr:hasChanges="inserted">
         <ID>24</ID>
         <Name>Up Left Combo</Name>
         <HotKey>combo({2, 0}, 5)</HotKey>
@@ -307,7 +309,7 @@ elsif GetCount() == 3 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings36" msdata:rowOrder="16" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings17" msdata:rowOrder="16" diffgr:hasChanges="inserted">
         <ID>25</ID>
         <Name>Up Right Combo</Name>
         <HotKey>combo({2, 1}, 6)</HotKey>
@@ -331,7 +333,7 @@ elsif GetCount() == 3 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings37" msdata:rowOrder="17" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings18" msdata:rowOrder="17" diffgr:hasChanges="inserted">
         <ID>26</ID>
         <Name>Down Left Combo</Name>
         <HotKey>combo({3, 0}, 7)</HotKey>
@@ -351,7 +353,7 @@ elsif GetCount() == 3 then
 endif</ScriptBody>
         <Enabled>true</Enabled>
       </OpeWinSettings>
-      <OpeWinSettings diffgr:id="OpeWinSettings38" msdata:rowOrder="18" diffgr:hasChanges="inserted">
+      <OpeWinSettings diffgr:id="OpeWinSettings19" msdata:rowOrder="18" diffgr:hasChanges="inserted">
         <ID>27</ID>
         <Name>Down Right Combo</Name>
         <HotKey>combo({3, 1}, 8)</HotKey>

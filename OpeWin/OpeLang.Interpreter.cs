@@ -510,23 +510,33 @@ namespace OpeLang
 
         class NegativeNum : Num
         {
-            private PositiveNum _value = null;
+            private UInteger _value_uint = null;
+            private Double _value_double = null;
 
-            public override bool isDouble { get { return _value.isDouble; } }
+            public override bool isDouble { get; set; } = false;
 
             public NegativeNum(object value)
             {
-                _value = (PositiveNum)value;
+                if (value is UInteger)
+                {
+                    _value_uint = (UInteger)value;
+                }
+
+                if (value is Double)
+                {
+                    _value_double = (Double)value;
+                    isDouble = true;
+                }
             }
 
             public override int EvalAsInt(Context context)
             {
-                return -1 * (int)_value.EvalAsInt(context);
+                return (-1*(int)_value_uint.Eval(context));
             }
 
             public override double EvalAsDouble(Context context)
             {
-                return -1 * _value.EvalAsDouble(context);
+                return (-1 * _value_double.Eval(context));
             }
         }
 

@@ -579,7 +579,7 @@ namespace com.calitha.goldparser
                 case (int)RuleConstants.RULE_NUM_MINUS:
                     //<Num> ::= '-' <PositiveNum>
                     //todo: Create a new object using the stored user objects.
-                    return new OpeLang.NonTerminal.NegativeNum(token.Tokens[0].UserObject);
+                    return new OpeLang.NonTerminal.NegativeNum(token.Tokens[1].UserObject);
 
                 case (int)RuleConstants.RULE_NUM:
                     //<Num> ::= <PositiveNum>
