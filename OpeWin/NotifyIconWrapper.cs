@@ -25,6 +25,7 @@ namespace OpeWin
             // Add click event to context menu items.
             this.toolStripMenuItem_Setting.Click += this.toolStripMenuItem_Setting_Click;
             this.toolStripMenuItem_Exit.Click += this.toolStripMenuItem_Exit_Click;
+            this.toolStripMenuItem_Reboot.Click += this.toolStripMenuItem_Reboot_Click;
 
         }
 
@@ -65,6 +66,14 @@ namespace OpeWin
         {
             OpeInfoTable.GetInstance().UnregisterAllOpeToHotKey(Window.GetHWnd());
             //OpeScript.GetInstance().CloseLua();
+            Application.Current.Shutdown();
+        }
+
+        public void toolStripMenuItem_Reboot_Click(object sender, EventArgs e)
+        {
+            OpeInfoTable.GetInstance().UnregisterAllOpeToHotKey(Window.GetHWnd());
+            //OpeScript.GetInstance().CloseLua();
+            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
             Application.Current.Shutdown();
         }
 

@@ -34,6 +34,7 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem_Setting = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem_Exit = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem_Reboot = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip.SuspendLayout();
             // 
             // notifyIcon
@@ -47,21 +48,28 @@
             // 
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem_Setting,
+            this.toolStripMenuItem_Reboot,
             this.toolStripMenuItem_Exit});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(112, 48);
+            this.contextMenuStrip.Size = new System.Drawing.Size(113, 70);
             // 
             // toolStripMenuItem_Setting
             // 
             this.toolStripMenuItem_Setting.Name = "toolStripMenuItem_Setting";
-            this.toolStripMenuItem_Setting.Size = new System.Drawing.Size(111, 22);
+            this.toolStripMenuItem_Setting.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem_Setting.Text = "Setting";
             // 
             // toolStripMenuItem_Exit
             // 
             this.toolStripMenuItem_Exit.Name = "toolStripMenuItem_Exit";
-            this.toolStripMenuItem_Exit.Size = new System.Drawing.Size(111, 22);
+            this.toolStripMenuItem_Exit.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem_Exit.Text = "Exit";
+            // 
+            // toolStripMenuItem_Reboot
+            // 
+            this.toolStripMenuItem_Reboot.Name = "toolStripMenuItem_Reboot";
+            this.toolStripMenuItem_Reboot.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItem_Reboot.Text = "Reboot";
             this.contextMenuStrip.ResumeLayout(false);
 
         }
@@ -72,5 +80,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_Setting;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_Exit;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_Reboot;
     }
 }
