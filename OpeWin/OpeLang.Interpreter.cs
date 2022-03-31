@@ -15,7 +15,9 @@ namespace OpeLang
 
         public Interpreter(string cgtPath)
         {
-            _parser = new Parser(cgtPath);
+            var assembly = Assembly.GetExecutingAssembly();
+            var stream = assembly.GetManifestResourceStream(cgtPath);
+            _parser = new Parser(stream);
             _context = new Context();
         }
 

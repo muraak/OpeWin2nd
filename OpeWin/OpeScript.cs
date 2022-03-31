@@ -19,7 +19,7 @@ namespace OpeWin
         {
             try
             {
-                _interpreter = new Interpreter("OpeLang_0.0.2.cgt");
+                _interpreter = new Interpreter("OpeWin.OpeLang_0.0.2.cgt");
             }
             catch(Exception e)
             {
